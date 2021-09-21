@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+<form method="post">
+    {% csrf_token %}
+    {{ UserForm.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
