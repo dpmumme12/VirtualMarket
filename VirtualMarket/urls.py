@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('api', include('VirMarket.urls')),
-    path('', include('VirMarket_CS.urls')),
+    path('', include('VirMarket.urls')),
+    path('api', include('VirMarket_CS.urls')),
     path('admin/', admin.site.urls),
 ]

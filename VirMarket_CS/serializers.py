@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import Article
+from .models import Stocks, Transactions, User_Finances
 
-class ArticleSerializer(serializers.ModelSerializer):
+
+class StocksSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Article
-        #fields = ['id', 'title', 'author','email']
-        fields = '__all__'
+        model = Stocks
+        fields = ['Symbol', 'Name', 'Shares', 'User_id']
    
 
