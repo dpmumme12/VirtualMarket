@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Stocks(models.Model):
@@ -17,17 +18,17 @@ class Stocks(models.Model):
 class Transactions(models.Model):
     """ This model is to keep track of all of the transactions the user has made. """
 
-    TRANSACTION_TYPES = [
-        ('BUY', 'BUY'),
-        ('SELL', 'SELL')
-    ]
+    class TRANSACTION_TYPES(models.TextChoices): 
+        BUY = 'BUY', _('BUY')
+        SELL = 'SELL', _('SELL') 
+    
 
     Symbol = models.CharField(max_length=10)
     Name = models.CharField(max_length=250)
     Shares = models.PositiveIntegerField()
-    Price = models.PositiveIntegerField()
+    Price = models.DecimalField(max_digits=20, decimal_places=2)
     TransactionDateTime = models.DateTimeField(auto_now_add=True)
-    TransactionType = models.CharField(max_length=4, choices=TRANSACTION_TYPES)
+    TransactionType = models.CharField(max_length=4, choices=TRANSACTION_TYPES.choices)
     User_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

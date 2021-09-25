@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework import serializers
 from rest_framework.parsers import JSONParser
 from .models import Stocks, Transactions, User_Finances
-from .serializers import StocksSerializer
+from .serializers import StocksSerializer, TransactionsSerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -28,8 +28,10 @@ from django.shortcuts import get_object_or_404
 
 
 
-class StocksAPIView(APIView):
-
+class StockTransactionAPIView(APIView):
+    
+    serializer_class = TransactionsSerializer
+    
 
     def get(self, request):
         get_stocks = Stocks.objects.all()
@@ -37,10 +39,13 @@ class StocksAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = StocksSerializer(data=request.data)
+        serializer = TransactionsSerializer(data=request.data)
 
         if serializer.is_valid():
+            
             serializer.save()
+            
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
