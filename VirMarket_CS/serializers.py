@@ -1,5 +1,6 @@
 from rest_framework import fields, serializers
 from .models import Stocks, Transactions, User_Finances
+from django.contrib.auth.models import User
 
 
 
@@ -8,13 +9,20 @@ class StocksSerializer(serializers.ModelSerializer):
         model = Stocks
         fields = ['Symbol', 'Name', 'Shares', 'User_id']
 
+
 class User_FinancesSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_Finances
-        fields = '__all__'
+        fields = ['Current_Balance']
+
+
+class User_ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','first_name', 'last_name', 'email']
+
 
 class TransactionsSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Transactions
         fields = ['Symbol', 'Name', 'Shares', 'Price', 'TransactionType','User_id']

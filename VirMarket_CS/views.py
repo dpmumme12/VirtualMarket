@@ -1,12 +1,13 @@
 from rest_framework.parsers import JSONParser
 from .models import Stocks, Transactions, User_Finances
-from .serializers import StocksSerializer, TransactionsSerializer, User_FinancesSerializer
+from .serializers import StocksSerializer, TransactionsSerializer, User_FinancesSerializer, User_ProfileSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -56,6 +57,31 @@ class User_FinancesAPIView(APIView):
     serializer_class = User_Finances
 
     def get(self, request):
-        get_userinfo = User_Finances.objects.filter(User = User.objects.get(id=request.user.id))
-        serializer = User_FinancesSerializer(get_userinfo)
+        user = User.objects.get(id=request.user.id)
+        get_user = User_Finances.objects.get(User=user)
+        serializer = User_FinancesSerializer(get_user)
         return Response(serializer.data)
+
+
+class User_InfoAPIView(APIView):
+
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+
+    def get(self, request):
+        user_info = User.objects.get(id = request.user.id)
+        serializer = User_ProfileSerializer(user_info)
+        return Response(serializer.data)
+
+    def put(self, request):
+        user = get_object_or_404(User, pk=request.user.id)
+        serializer = User_ProfileSerializer(user,data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+

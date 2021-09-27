@@ -1,5 +1,15 @@
 {% extends 'layout.html' %}
 
 {% block main %}
+<div class='container'>
+    <h1>ChartJS Line Chart with JSON data</h1>
+    <div>
+        <canvas id='canvas'></canvas>
+    </div>
+</div>
 
+<script>
+   var data = "{{data | safe}}";
+
+</script>
 {% endblock %}

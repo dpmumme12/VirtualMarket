@@ -4,8 +4,9 @@ from . import views
 
 
 urlpatterns = [
-    path('Transactions', views.StockTransactionAPIView.as_view(), name='TransacionsAPI'),
+    path('Transactions', views.StockTransactionAPIView.as_view(), name = 'TransacionsAPI'),
     path('Stocks', views.StocksAPIView.as_view(), name = 'StocksAPI'),
-    path('UserInfo', views.User_FinancesAPIView.as_view(), name = 'UserAPI')
+    path('UserBalance', views.User_FinancesAPIView.as_view(), name = 'UserBalanceAPI'),
+    path('UserInfo', views.User_InfoAPIView.as_view(), name = 'UserInfoAPI'),
 
 ]
