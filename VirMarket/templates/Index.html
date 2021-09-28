@@ -8,8 +8,6 @@
     </div>
 </div>
 
-<script>
-   var data = "{{data | safe}}";
 
-</script>
+{{data|json_script:"mydata"}}
 {% endblock %}

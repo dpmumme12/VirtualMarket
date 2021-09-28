@@ -12,22 +12,9 @@ from decimal import Decimal
 
 @login_required()
 def index(request):
-    queryset = Stocks.objects.filter(User_id = request.user.id).order_by('Symbol')
-    user_stocks = []
-    for stock in queryset:
-        user_stocks.append(stock.Symbol)
-    base_url = f"https://sandbox.iexapis.com/stable/stock/market/batch?symbols={(','.join(user_stocks))}&types=price&"
-    url = base_url  + parse.urlencode({"token": 'Tsk_67f6bc30222b44d1b13725f19d0619db'})
+ 
+    url = 'https://sandbox.iexapis.com/stable/stock/AAPL/chart/date/20210927?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
     response = requests.get(url).json()
-    print(response)
-    TotalAccountBalance = 0
-    for stock in queryset:
-        try:
-            TotalAccountBalance += (stock.Shares * response[stock.Symbol.upper()]['price'])
-        except:
-            pass
-
-    print(TotalAccountBalance)
     
 
     
@@ -75,3 +62,22 @@ def Login(request):
 def Logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('Login'))
+
+
+################ total balance script ############
+     # queryset = Stocks.objects.filter(User_id = request.user.id).order_by('Symbol')
+    # user_stocks = []
+    # for stock in queryset:
+    #     user_stocks.append(stock.Symbol)
+    # base_url = f"https://sandbox.iexapis.com/stable/stock/market/batch?symbols={(','.join(user_stocks))}&types=price&"
+    # url = base_url  + parse.urlencode({"token": 'Tsk_67f6bc30222b44d1b13725f19d0619db'})
+    # response = requests.get(url).json()
+    # print(response)
+    # TotalAccountBalance = 0
+    # for stock in queryset:
+    #     try:
+    #         TotalAccountBalance += (stock.Shares * response[stock.Symbol.upper()]['price'])
+    #     except:
+    #         pass
+
+    # print(TotalAccountBalance)

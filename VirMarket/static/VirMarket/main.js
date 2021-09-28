@@ -1,37 +1,69 @@
 
-var ctx = document.getElementById('canvas').getContext('2d');
-var myChart = new Chart(ctx, {
+const data = JSON.parse(document.getElementById('mydata').textContent);
+console.log(data)
+
+var times = data.map(function(elem){
+    return elem.label;
+});
+
+var prices = data.map(function(elem){
+    return elem.high;
+});
+
+var AvgPrice  = data.at(-1).average;
+
+var min = AvgPrice - AvgPrice/15;
+var max = AvgPrice + AvgPrice/15;
+
+
+GraphData = {
     type: 'line',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: times,
         datasets: [{
             label: 'High',
-            data: [12, 19, 3, 5, 2, 3],
+            data: prices,
             backgroundColor: 'transparent',
             borderColor:'blue',
-            borderWidth: 1
-        },
-        {
-            label: 'Low',
-            data: [9, 15, 1, 3, 0, 1],
-            backgroundColor: 'transparent',
-            borderColor:'Green',
             borderWidth: 1
         }]
     },
     options: {
         elements:{
-            line:{
-                tension:0
+            point:{
+                radius:0
             }
         },
         scales: {
             y: {
-                beginAtZero: true
+                min: min,
+                max: max
             }
-        }
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: true
+         },
+         hover: {
+            mode: 'index',
+            intersect: false
+         }
+         
     }
-});
+};
 
 
-document.write(window.data);
+
+var ctx = document.getElementById('canvas').getContext('2d');
+var myChart = new Chart(ctx, GraphData);
+
+var socket = new WebSocket('ws://localhost:8000/ws/graph/');
+
+socket.onmessage = function(elem){
+    var data = JSON.parse(elem.data);
+
+    GraphData.data.datasets[0].data.shift();
+    GraphData.data.datasets[0].data.push(data.value);
+
+    myChart.update();
+}
