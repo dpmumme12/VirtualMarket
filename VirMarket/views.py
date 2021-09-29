@@ -12,14 +12,20 @@ from decimal import Decimal
 
 @login_required()
 def index(request):
+
+    return render(request, 'index.html')
+
+
+@login_required()
+def CompanyPage(request, Symbol):
  
-    url = 'https://sandbox.iexapis.com/stable/stock/AAPL/chart/date/20210927?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
+    url = f'https://sandbox.iexapis.com/stable/stock/{Symbol}/chart/3m?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
     response = requests.get(url).json()
     
 
     
 
-    return render(request, 'index.html', {
+    return render(request, 'CompanyPage.html', {
         'data': response
     })
 

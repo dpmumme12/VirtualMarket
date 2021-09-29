@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class='container'>
+    <div class="row align-items-start ">
+        <div class='col-8'>
+            <h1>ChartJS Line Chart with JSON data</h1>
+            <div>
+                <canvas id='canvas'></canvas>
+            </div>
+        </div>
+          <div class="col-4 .col-sm-4" >
+            One of three columns
+          </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+{{data|json_script:"mydata"}}
+<script src="{% static 'VirMarket/CompanyPage.js' %}"></script>
+{% endblock %}
