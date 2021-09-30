@@ -9,3 +9,7 @@
 </div>
 
 {% endblock %}
+
+{% block scripts %}
+{{data|json_script:"mydata"}}
+{% endblock %}

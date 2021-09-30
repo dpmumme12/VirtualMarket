@@ -13,7 +13,23 @@ from decimal import Decimal
 @login_required()
 def index(request):
 
-    return render(request, 'index.html')
+    queryset = Stocks.objects.filter(User_id = request.user.id).order_by('Symbol')
+    
+    user_stocks = []
+    for stock in queryset:
+        user_stocks.append(stock.Symbol)
+    base_url = f"https://sandbox.iexapis.com/stable/stock/market/batch?symbols={(','.join(user_stocks))}&types=price&"
+    url = base_url  + parse.urlencode({"token": 'Tsk_67f6bc30222b44d1b13725f19d0619db'})
+    response = requests.get(url).json()
+    TotalAccountBalance = 0
+    for stock in queryset:
+        try:
+            TotalAccountBalance += (stock.Shares * response[stock.Symbol.upper()]['price'])
+        except:
+            pass
+
+
+    return render(request, 'index.html', {'data': TotalAccountBalance})
 
 
 @login_required()

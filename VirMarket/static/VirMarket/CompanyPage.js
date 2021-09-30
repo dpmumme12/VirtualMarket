@@ -67,7 +67,7 @@ GraphData = {
 var ctx = document.getElementById('canvas').getContext('2d');
 var myChart = new Chart(ctx, GraphData);
 
-var socket = new WebSocket('ws://localhost:8000/ws/graph/');
+var socket = new WebSocket('ws://localhost:8000/ws/stockgraph/');
 
 socket.onmessage = function(elem){
     var num = JSON.parse(elem.data)

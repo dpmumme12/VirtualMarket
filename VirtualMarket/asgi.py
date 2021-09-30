@@ -14,6 +14,8 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.sessions import SessionMiddleware
 from VirMarket.routing import ws_urlpatterns
+from channels.sessions import SessionMiddlewareStack
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VirtualMarket.settings')
 
