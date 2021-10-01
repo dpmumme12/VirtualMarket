@@ -14,6 +14,7 @@ from decimal import Decimal
 def index(request):
 
     queryset = Stocks.objects.filter(User_id = request.user.id).order_by('Symbol')
+    UninvestedBalance = User_Finances.objects.get(User = request.user).Current_Balance
     
     user_stocks = []
     for stock in queryset:
@@ -28,8 +29,9 @@ def index(request):
         except:
             pass
 
-
-    return render(request, 'index.html', {'data': TotalAccountBalance})
+    TotalAccountBalance= TotalAccountBalance + float(UninvestedBalance)
+    
+    return render(request, 'index.html', {'data': TotalAccountBalance, 'pk': request.user.id})
 
 
 @login_required()

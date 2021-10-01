@@ -1,11 +1,11 @@
+from re import T
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from random import randint
 from asyncio import sleep
 import aiohttp
-from VirMarket_CS.models import Stocks
+from VirMarket_CS.models import Stocks, User_Finances
 from asgiref.sync import sync_to_async
-from channels.auth import login
+from django.contrib.auth.models import User
 
 class StockGraphConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -29,11 +29,11 @@ class UserTotalAccountBalanceConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         
         await self.accept()
-        
-
         pk = self.scope['url_route']['kwargs']['pk']
-    
-        queryset =  await get_set(pk)
+        
+        UninvestedBalance = await get_UninvestedBalance(pk)
+        queryset =  await get_stocks(pk)
+        
         user_stocks = []
         for stock in queryset:
             user_stocks.append(stock['Symbol'])
@@ -49,9 +49,17 @@ class UserTotalAccountBalanceConsumer(AsyncWebsocketConsumer):
                                 TotalAccountBalance += (stock['Shares'] * response[stock['Symbol'].upper()]['price'])
                             except:
                                 pass
+
+                        TotalAccountBalance += float(UninvestedBalance)
                         await self.send(json.dumps({'price': TotalAccountBalance}))
                         await sleep(1)
 
 @sync_to_async()
-def get_set(pk):
+def get_stocks(pk):
     return list(Stocks.objects.filter(User_id = pk).order_by('Symbol').values())
+
+@sync_to_async()
+def get_UninvestedBalance(pk):
+    user = User.objects.get(id =pk)
+    return User_Finances.objects.get(User = user).Current_Balance
+

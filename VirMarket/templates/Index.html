@@ -2,14 +2,22 @@
 
 {% block main %}
 <div class='container'>
-    <h1>ChartJS Line Chart with JSON data</h1>
-    <div>
-        <canvas id='canvas'></canvas>
+    <div class="row ">
+        <div class='col-8'>
+            <h1 style='text-align: left;'>Total Account Balance</h1>
+            <h2 id='TotalAccountBalance'></h2>
+            <div style="margin-top: 15px;">
+                <canvas id='canvas'></canvas>
+            </div>
+        </div>
+          <div class="col-4 .col-sm-4" >
+            One of three columns
+          </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
 {{data|json_script:"mydata"}}
+{{pk|json_script:"key"}}
 {% endblock %}
