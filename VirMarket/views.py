@@ -30,8 +30,19 @@ def index(request):
             pass
 
     TotalAccountBalance= TotalAccountBalance + float(UninvestedBalance)
+
+    url = 'https://sandbox.iexapis.com/stable/stock/market/list/gainers?displayPercent=true&token=Tsk_67f6bc30222b44d1b13725f19d0619db'
+    gainers = requests.get(url).json()
+
+    url = 'https://sandbox.iexapis.com/stable/stock/market/list/losers?displayPercent=true&token=Tsk_67f6bc30222b44d1b13725f19d0619db'
+    losers = requests.get(url).json()
+
     
-    return render(request, 'index.html', {'data': TotalAccountBalance, 'pk': request.user.id})
+    return render(request, 'index.html', {
+        'data': TotalAccountBalance, 
+        'pk': request.user.id,
+        'gainers': gainers,
+        'losers': losers})
 
 
 @login_required()

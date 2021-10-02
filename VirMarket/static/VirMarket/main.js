@@ -6,8 +6,6 @@ var times = [formatAMPM(new Date)];
 var CurrentLabelToPop = times[0]
 
 var prices =  [data];
-
-
 LineColor = 'limegreen'
 
 GraphData = {

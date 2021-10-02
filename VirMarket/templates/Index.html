@@ -1,7 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block main %}
+<div class="ticker-wrap">
+    <div class="ticker">
+        <div class="ticker_item"> Top Gainers: </div>
+        {% for gainer in gainers %}
+            <div class="ticker_item"> {{ gainer.symbol}} <p style="color: limegreen; display: inline-block;">+{{ gainer.changePercent|floatformat:2 }}%</p></div>
+        {% endfor %}
+        <div class="ticker_item"> Top Losers: </div>
+        {% for loser in losers %}
+            <div class="ticker_item"> {{ loser.symbol}} <p style="color: red; display: inline-block;">{{ loser.changePercent|floatformat:2 }}%</p></div>
+        {% endfor %}
+
+
+    </div>
+</div>
 <div class='container'>
+    
     <div class="row ">
         <div class='col-8'>
             <h1 style='text-align: left;'>Total Account Balance</h1>
@@ -11,7 +26,17 @@
             </div>
         </div>
           <div class="col-4 .col-sm-4" >
-            One of three columns
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">My Positions</button>
+                  <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Search</button>
+                </div>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+              </div>
+              
           </div>
     </div>
 </div>
