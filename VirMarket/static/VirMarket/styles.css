@@ -3,6 +3,48 @@ h1{
     font-size: 46px;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+.dropdown-content {
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+  }
+  
+.dropdown-content .Dropdown-Item{
+    color: black;
+    padding-left: 12px;
+    text-decoration: none;
+    display: block;
+  }
+
+.Dropdown-Item{
+      border-bottom: 0.5px solid lightgrey;
+  }
+
+.SearchDescription {
+    font-size: 12px;
+}
+
+.dropdown .Dropdown-Item:hover {background-color: #ddd;}
+
+.StocksContent{
+    border-bottom: 0.3px solid lightgray;
+    display: inline-block;
+    width: 100%;
+}
+
+.StockItem{
+    display: inline-block;
+    padding-right: 75px;
+}
+
 #canvas{
     width: 100%;
 }
@@ -23,6 +65,7 @@ h1{
 }
 
 .ticker-wrap {
+    position: fixed;
     
     width: 100%;
     overflow: hidden;
@@ -36,7 +79,7 @@ h1{
 .ticker {
     display: inline-block;
     white-space: nowrap;
-    padding-right: 100%;
+    
     box-sizing: content-box;
 
     

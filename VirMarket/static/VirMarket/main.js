@@ -125,6 +125,68 @@ function formatAMPM(date) {
     return strTime;
   }
 
+var typingTimer;
+var doneTypingInterval = 300;
+
+function SearchKeyUp() {
+    clearTimeout(typingTimer);
+    var typingTimer = setTimeout(SearchQuery, doneTypingInterval);
+}
+
+function SearchKeyDown() {
+    clearTimeout(typingTimer);
+}
+
+function SearchOnBlur(){
+    // document.getElementById('MyDropdown').innerHTML = '';
+    // document.getElementById('SearchBar').value = '';
+}
+
+
+async function SearchQuery() {
+    document.getElementById('MyDropdown').innerHTML = '';
+
+    var query = document.getElementById('SearchBar').value.toUpperCase();
+
+    if (query === ''){
+        return
+    }
+
+    await fetch(`https://finnhub.io/api/v1/search?q=${query}&token=c5bmkjqad3ifmvj0nc10`)
+    .then(response => response.json())
+    .then(data => {
+        Stocks = data.result
+        Stocks = Stocks.filter(function(elem) {
+            return !elem.symbol.includes('.') & !elem.symbol.includes(':');
+        });
+
+        for(i=0; i< 10; i++){
+        document.getElementById('MyDropdown').innerHTML += `<a href="${'/Stock/' + Stocks[i].symbol}" class="Dropdown-Item">${Stocks[i].symbol}<p class="SearchDescription">${Stocks[i].description}</p></a>`;
+        }
+    });
+}
+
+fetch('/api/Stocks')
+.then(response => response.json())
+.then(data => {
+    stocks = data
+    for (stock of stocks){
+        document.getElementById('StocksTableBody').innerHTML += `
+        <tr class="clickable-row" data-href="/Stock/${stock.Symbol} onClick="RedirectStock(this)">
+            <td>${stock.Symbol}</td>
+            <td>${stock.Shares}</td>
+            <td id='${stock.Symbol}-price'>$120.32</td>
+        </tr>`
+    };
+});
+
+
+
+function RedirectStock(obj) {
+    var url = obj.getAttribute('data-href');
+    console.log('e');
+}
+
 
 
 
