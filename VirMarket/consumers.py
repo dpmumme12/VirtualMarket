@@ -10,8 +10,6 @@ from django.contrib.auth.models import User
 class StockGraphConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
-        print(self.scope['session'])
-        print(self.scope['user'])
 
         async with aiohttp.ClientSession() as session:
 
@@ -39,19 +37,19 @@ class UserTotalAccountBalanceConsumer(AsyncWebsocketConsumer):
             user_stocks.append(stock['Symbol'])
 
         async with aiohttp.ClientSession() as session:
-            url = f"https://sandbox.iexapis.com/stable/stock/market/batch?symbols={(','.join(user_stocks))}&types=price&token=Tsk_67f6bc30222b44d1b13725f19d0619db"
+            url = f"https://sandbox.iexapis.com/stable/stock/market/batch?symbols={(','.join(user_stocks))}&types=quote&token=Tsk_67f6bc30222b44d1b13725f19d0619db"
             while True:
                 async with session.get(url) as resp:
                         response = await resp.json()
                         TotalAccountBalance = 0
                         for stock in queryset:
                             try:
-                                TotalAccountBalance += (stock['Shares'] * response[stock['Symbol'].upper()]['price'])
+                                TotalAccountBalance += (stock['Shares'] * response[stock['Symbol'].upper()]['quote']['latestPrice'])
                             except:
                                 pass
 
                         TotalAccountBalance += float(UninvestedBalance)
-                        await self.send(json.dumps({'price': TotalAccountBalance}))
+                        await self.send(json.dumps({'TotalAccountBalance': TotalAccountBalance, 'stocks': response}))
                         await sleep(1)
 
 @sync_to_async()
@@ -62,4 +60,5 @@ def get_stocks(pk):
 def get_UninvestedBalance(pk):
     user = User.objects.get(id =pk)
     return User_Finances.objects.get(User = user).Current_Balance
+
 

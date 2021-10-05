@@ -64,9 +64,14 @@ h1{
     }
 }
 
+.TickerScreenWrap {
+    max-width:100vw; 
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+
 .ticker-wrap {
-    position: fixed;
-    
+    max-width:100vw; 
     width: 100%;
     overflow: hidden;
     max-height: 30px;
@@ -79,10 +84,8 @@ h1{
 .ticker {
     display: inline-block;
     white-space: nowrap;
-    
     box-sizing: content-box;
 
-    
     animation-iteration-count: infinite;
     animation-timing-function: linear;
     animation-name: ticker;

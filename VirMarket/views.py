@@ -4,14 +4,21 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .forms import SignUpForm, LoginForm
-from VirMarket_CS.models import User_Finances, Stocks
+from VirMarket_CS.models import User_Finances, Stocks, Transactions
 import requests
 from urllib import parse
+from django.core.paginator import Paginator
 from decimal import Decimal
 
 
 @login_required()
 def index(request):
+
+    objects = Transactions.objects.filter(User_id = request.user.id).order_by('TransactionDateTime')
+    Users_Transactions = Paginator(objects, 15)
+
+    page_number = request.GET.get('page')
+    page_obj = Users_Transactions.get_page(page_number)
 
     queryset = Stocks.objects.filter(User_id = request.user.id).order_by('Symbol')
     UninvestedBalance = User_Finances.objects.get(User = request.user).Current_Balance
@@ -42,7 +49,8 @@ def index(request):
         'data': TotalAccountBalance, 
         'pk': request.user.id,
         'gainers': gainers,
-        'losers': losers})
+        'losers': losers,
+        'page_obj': page_obj})
 
 
 @login_required()
@@ -55,7 +63,7 @@ def CompanyPage(request, Symbol):
     
 
     return render(request, 'CompanyPage.html', {
-        'data': response
+        'data': response,
     })
 
 ### Authentication Views ###

@@ -1,21 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block main %}
-<div class="ticker-wrap">
-    <div class="ticker">
-        <div class="ticker_item"> Top Gainers: </div>
-        {% for gainer in gainers %}
-            <div class="ticker_item"> {{ gainer.symbol}} <p style="color: limegreen; display: inline-block;">+{{ gainer.changePercent|floatformat:2 }}%</p></div>
-        {% endfor %}
-        <div class="ticker_item"> Top Losers: </div>
-        {% for loser in losers %}
-            <div class="ticker_item"> {{ loser.symbol}} <p style="color: red; display: inline-block;">{{ loser.changePercent|floatformat:2 }}%</p></div>
-        {% endfor %}
-
-
+<div class="TickerScreenWrap" >
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker_item"> Top Gainers: </div>
+            {% for gainer in gainers %}
+                <div class="ticker_item"> {{ gainer.symbol}} <p style="color: limegreen; display: inline-block;">+{{ gainer.changePercent|floatformat:2 }}%</p></div>
+            {% endfor %}
+            <div class="ticker_item"> Top Losers: </div>
+            {% for loser in losers %}
+                <div class="ticker_item"> {{ loser.symbol}} <p style="color: red; display: inline-block;">{{ loser.changePercent|floatformat:2 }}%</p></div>
+            {% endfor %}
+        </div>
     </div>
 </div>
-<div class='container' style="padding-top: 40px;">
+
+<div class='container' >
     
     <div class="row ">
         <div class='col-8'>
@@ -29,7 +30,7 @@
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                   <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">My Positions</button>
-                  <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Search</button>
+                  <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Transaction History</button>
                 </div>
               </nav>
               <div class="tab-content" id="nav-tabContent">
@@ -44,7 +45,47 @@
                         </tbody>    
                     </table>
                 </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <table class="table table-hover">
+                        <thead>
+                            <th scope="col">Symbol</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Shares</th>
+                            <th scope="col">Price</th>
+                        </thead>
+                        <tbody id="StocksTableBody">
+                            {% for transaction in page_obj %}
+                                <tr>
+                                    <td>{{transaction.Symbol}}</td>
+                                    {% if transaction.TransactionType == "BUY" %}
+                                        <td style="color: limegreen;">{{transaction.TransactionType}}</td>
+                                    {% else %}
+                                        <td style="color: red;">{{transaction.TransactionType}}</td>
+                                    {% endif %}
+                                    <td>{{transaction.Shares}}</td>
+                                    <td>{{transaction.Price}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>    
+                    </table>
+                    {% if page_obj.paginator.num_pages > 1 %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            {% endif %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            </li>
+                            {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
               </div>
               
           </div>
