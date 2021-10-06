@@ -3,6 +3,17 @@ h1{
     font-size: 46px;
 }
 
+.nav-link
+{
+   color: black;
+   text-decoration: none;
+}
+.nav-link:hover
+{
+   text-decoration: underline;
+}
+
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -14,7 +25,7 @@ h1{
     min-width: 230px;
     overflow: auto;
     border: 1px solid #ddd;
-    z-index: 1;
+    z-index: 2;
   }
   
 .dropdown-content .Dropdown-Item{
@@ -97,4 +108,8 @@ h1{
     display: inline-block;
     color: black; 
     padding-right: 15px;
+}
+
+@media all and (max-width:480px) {
+    .news-image{display: block !important;}
 }

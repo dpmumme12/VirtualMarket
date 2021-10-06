@@ -44,13 +44,18 @@ def index(request):
     url = 'https://sandbox.iexapis.com/stable/stock/market/list/losers?displayPercent=true&token=Tsk_67f6bc30222b44d1b13725f19d0619db'
     losers = requests.get(url).json()
 
+    url = 'https://finnhub.io/api/v1/news?category=general&minId=10&token=c5bmkjqad3ifmvj0nc10'
+    resp = requests.get(url).json()
+    NewsArticles = resp[:5]
+    print(NewsArticles)
     
     return render(request, 'index.html', {
         'data': TotalAccountBalance, 
         'pk': request.user.id,
         'gainers': gainers,
         'losers': losers,
-        'page_obj': page_obj})
+        'page_obj': page_obj,
+        'NewsArticles': NewsArticles})
 
 
 @login_required()

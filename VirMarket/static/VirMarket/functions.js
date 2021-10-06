@@ -1,4 +1,50 @@
-export function GetGraphData(times, prices, LineColor) {
+var typingTimer;
+var doneTypingInterval = 400;
+
+function SearchKeyUp() {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(SearchQuery, doneTypingInterval);
+}
+
+function SearchKeyDown() {
+    clearTimeout(typingTimer);
+}
+
+function SearchOnBlur(){
+    document.getElementById('MyDropdown').innerHTML = '';
+    document.getElementById('SearchBar').value = '';
+}
+
+
+function SearchQuery() {
+    document.getElementById('MyDropdown').innerHTML = '';
+
+    var query = document.getElementById('SearchBar').value.toUpperCase();
+
+    if (query === ''){
+        return
+    }
+
+    fetch(`https://finnhub.io/api/v1/search?q=${query}&token=c5bmkjqad3ifmvj0nc10`)
+    .then(response => response.json())
+    .then(data => {
+        Stocks = data.result
+        Stocks = Stocks.filter(function(elem) {
+            return !elem.symbol.includes('.') & !elem.symbol.includes(':');
+        });
+       
+        for(i=0; i< 10; i++){
+            if (Stocks[i] == null){
+                //pass
+            }
+            else{
+                document.getElementById('MyDropdown').innerHTML += `<a href="${'/Stock/' + Stocks[i].symbol}" class="Dropdown-Item">${Stocks[i].symbol}<p class="SearchDescription">${Stocks[i].description}</p></a>`;
+            }
+        }
+    });
+}
+
+function GetGraphData(times, prices, LineColor) {
     var GraphData = {
         type: 'line',
         data: {
@@ -52,7 +98,7 @@ export function GetGraphData(times, prices, LineColor) {
     return GraphData;
 }
 
-export function formatAMPM(date) {
+function formatAMPM(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';
