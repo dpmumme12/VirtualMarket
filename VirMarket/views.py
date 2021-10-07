@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from decimal import Decimal
 
 
+
 @login_required()
 def index(request):
 
@@ -62,13 +63,17 @@ def index(request):
 def CompanyPage(request, Symbol):
  
     url = f'https://sandbox.iexapis.com/stable/stock/{Symbol}/chart/3m?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
-    response = requests.get(url).json()
+    ChartData = requests.get(url).json()
+
+    url = f'https://sandbox.iexapis.com/stable/stock/{Symbol}/quote?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
+    quote = requests.get(url).json()
     
 
     
 
     return render(request, 'CompanyPage.html', {
-        'data': response,
+        'data': ChartData,
+        'quote': quote,
     })
 
 ### Authentication Views ###

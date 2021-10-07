@@ -1,18 +1,37 @@
 {% extends 'layout.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block main %}
 
 <div class='container'>
     <div class="row align-items-start ">
-        <div class='col-8'>
-            <h1>ChartJS Line Chart with JSON data</h1>
+        <div class='col-sm-8'>
+            <div>
+                <h1 style='text-align: left;'>{{quote.companyName}}</h1>
+                <h2 id='CurrentPrice'></h2>
+                <div style="margin-top: 15px;">
+                    <canvas id='canvas'></canvas>
+                </div>
+            </div>
             <div>
                 <canvas id='canvas'></canvas>
             </div>
         </div>
-          <div class="col-4 .col-sm-4" >
-            One of three columns
+          <div class="col-sm-4" >
+            <div style="border-bottom: .2px solid lightgray;">
+                <h2>Statistics</h2>
+            </div>
+            <div class="row row-cols-2" style="padding-top: 10px;">
+                <div class="col stats-row"><h5>Open</h5><h5>{% if quote.open == None  %}--{% else %}${{quote.open|intcomma}}{% endif %}</h5></div>
+                <div class="col stats-row"><h5>Volume</h5><h5>{{quote.latestVolume|intword}}</h5></div>
+                <div class="col stats-row"><h5>Today's high</h5><h5>{% if quote.high == None  %}--{% else %}${{quote.high|intcomma}}{% endif %}</h5></div>
+                <div class="col stats-row"><h5>Average Volume</h5><h5>{{quote.avgTotalVolume|intword}}</h5></div>
+                <div class="col stats-row"><h5>Today's low</h5><h5>{% if quote.low == None  %}--{% else %}${{quote.low|intcomma}}{% endif %}</h5></div>
+                <div class="col stats-row"><h5>Market cap</h5><h5>{{quote.marketCap|intword}}</h5></div>
+                <div class="col stats-row"><h5>52 week high</h5><h5>{% if quote.week52High == None  %}--{% else %}${{quote.week52High|intcomma}} {% endif %}</h5></div>
+                <div class="col stats-row"><h5>52 week low</h5><h5>{% if quote.week52Low == None  %}--{% else %}${{quote.week52Low|intcomma}} {% endif %}</h5></div>
+              </div>
           </div>
     </div>
 </div>

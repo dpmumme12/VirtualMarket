@@ -1,5 +1,4 @@
 h1{
-    text-align: center;
     font-size: 46px;
 }
 
@@ -44,6 +43,10 @@ h1{
 }
 
 .dropdown .Dropdown-Item:hover {background-color: #ddd;}
+
+.stats-row{
+    padding-bottom: 10px;
+}
 
 .StocksContent{
     border-bottom: 0.3px solid lightgray;

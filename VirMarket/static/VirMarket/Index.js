@@ -93,6 +93,6 @@ socket.onmessage = function(elem){
           document.getElementById(`${stock}-price`).innerHTML = stocks[stock].quote.latestPrice.toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD',
-          });;
+          });
       }  
 }

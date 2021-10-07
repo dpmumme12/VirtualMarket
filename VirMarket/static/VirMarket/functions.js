@@ -1,4 +1,5 @@
 var typingTimer;
+var blurtimeout;
 var doneTypingInterval = 400;
 
 function SearchKeyUp() {
@@ -11,8 +12,12 @@ function SearchKeyDown() {
 }
 
 function SearchOnBlur(){
-    document.getElementById('MyDropdown').innerHTML = '';
+    setTimeout(clearSearchBar, 100);
+}
+
+function clearSearchBar(){
     document.getElementById('SearchBar').value = '';
+    document.getElementById('MyDropdown').innerHTML = '';
 }
 
 
@@ -38,7 +43,7 @@ function SearchQuery() {
                 //pass
             }
             else{
-                document.getElementById('MyDropdown').innerHTML += `<a href="${'/Stock/' + Stocks[i].symbol}" class="Dropdown-Item">${Stocks[i].symbol}<p class="SearchDescription">${Stocks[i].description}</p></a>`;
+                document.getElementById('MyDropdown').innerHTML += `<a tabIndex="-1" href="${'/Stock/' + Stocks[i].symbol}" class="Dropdown-Item">${Stocks[i].symbol}<p class="SearchDescription">${Stocks[i].description}</p></a>`;
             }
         }
     });

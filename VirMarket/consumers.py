@@ -13,13 +13,13 @@ class StockGraphConsumer(AsyncWebsocketConsumer):
 
         async with aiohttp.ClientSession() as session:
 
-            url = 'https://sandbox.iexapis.com/stable/stock/AAPL/price?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
+            url = 'https://sandbox.iexapis.com/stable/stock/AAPL/quote?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
 
             for i in range (1000):
         
                 async with session.get(url) as resp:
                     response = await resp.json()
-                    await self.send(json.dumps({'value': response}))
+                    await self.send(json.dumps({'response': response}))
                     await sleep(1)
 
 
