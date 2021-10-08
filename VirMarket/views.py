@@ -15,7 +15,7 @@ from decimal import Decimal
 @login_required()
 def index(request):
 
-    objects = Transactions.objects.filter(User_id = request.user.id).order_by('TransactionDateTime')
+    objects = Transactions.objects.filter(User_id = request.user.id).order_by('-TransactionDateTime')
     Users_Transactions = Paginator(objects, 15)
 
     page_number = request.GET.get('page')
@@ -74,6 +74,7 @@ def CompanyPage(request, Symbol):
     return render(request, 'CompanyPage.html', {
         'data': ChartData,
         'quote': quote,
+        'UserId': request.user.id,
     })
 
 ### Authentication Views ###

@@ -2,6 +2,10 @@ h1{
     font-size: 46px;
 }
 
+.padding-top-10{
+    padding-top: 15px;
+}
+
 .nav-link
 {
    color: black;

@@ -24,6 +24,7 @@ class StockTransactionAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        
         serializer = TransactionsSerializer(data=request.data)
 
         if serializer.is_valid():

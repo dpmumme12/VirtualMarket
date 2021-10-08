@@ -20,7 +20,7 @@ fetch('/api/Stocks')
     var stocks = data
     for (let stock of stocks){
         document.getElementById('StocksTableBody').innerHTML += `
-        <tr style="position: relative; z-index: -1;">
+        <tr style="position: relative; ">
             <td>${stock.Symbol}</td>
             <td>${stock.Shares}</td>
             <td id='${stock.Symbol.toUpperCase()}-price'></td>
