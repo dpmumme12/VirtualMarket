@@ -82,6 +82,8 @@ function Transaction(){
 
     var shares = document.getElementById('SharesInput').value;
     const csrfToken = getCookie('csrftoken');
+    var price = Math.round((quote.iexRealtimePrice + Number.EPSILON) * 100) / 100
+
 
     fetch('/api/Transactions', {
         method: 'POST', 
@@ -94,13 +96,37 @@ function Transaction(){
         "Symbol": quote.symbol,
         "Name": quote.companyName,
         "Shares": parseInt(shares),
-        "Price": quote.iexRealtimePrice,
+        "Price": price,
         "TransactionType": TransactionType,
         "User_id": UserId
         })
     })
+    .then(response => {
+        return response.json().then((data) => {
+           return {
+             data: data,
+             status_code: response.status,
+           };
+        });
+     })
     .then(resp => {
-        console.log(resp.json());
+        console.log(resp.data.error_message)
+        console.log(resp.status_code)
+        
+        // var successful = resp[0].Successful;
+
+        // if (successful === true) {
+        //     if (TransactionType === 'BUY'){
+        //         console.log('Purchased successfully')
+        //     }
+        //     else if (TransactionType === 'SELL') {
+        //         console.log('Sold successfully')
+        //     }
+        // }
+        // else {
+        //     console.log(resp[0].error_message)
+        // }
+
     })
     SumbitButton.disabled = false;
 
