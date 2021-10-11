@@ -10,12 +10,14 @@ from django.contrib.auth.models import User
 class StockGraphConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
+        symbol = self.scope['url_route']['kwargs']['symbol']
+        print(symbol)
 
         async with aiohttp.ClientSession() as session:
 
-            url = 'https://sandbox.iexapis.com/stable/stock/AAPL/quote?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
+            url = f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
 
-            for i in range (1000):
+            while True:
         
                 async with session.get(url) as resp:
                     response = await resp.json()

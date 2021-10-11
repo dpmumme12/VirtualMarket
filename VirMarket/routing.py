@@ -5,6 +5,6 @@ from django.urls import re_path
 
 
 ws_urlpatterns =[
-    url('ws/stockgraph/', StockGraphConsumer.as_asgi()),
+    re_path('ws/stockgraph/(?P<symbol>\w+)/$', StockGraphConsumer.as_asgi()),
     re_path('ws/UserTotalAccountBalance/(?P<pk>\d+)/$', UserTotalAccountBalanceConsumer.as_asgi()),
 ]

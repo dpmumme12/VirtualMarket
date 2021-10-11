@@ -72,6 +72,7 @@
 {% block scripts %}
 {{data|json_script:"mydata"}}
 {{UserId|json_script:"Id"}}
+{{quote.symbol|json_script:"symbol"}}
 <script>var token = '{{csrf_token}}';</script>
 <script src="{% static 'VirMarket/CompanyPage.js' %}"></script>
 {% endblock %}
