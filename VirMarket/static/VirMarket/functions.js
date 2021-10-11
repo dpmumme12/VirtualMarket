@@ -129,3 +129,7 @@ function formatAMPM(date) {
     }
     return cookieValue;
 }
+
+function closeAlert(){
+    document.getElementById('alert-wrapper').style.display = 'none';
+}

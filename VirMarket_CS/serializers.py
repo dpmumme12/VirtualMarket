@@ -34,7 +34,7 @@ class TransactionsSerializer(serializers.ModelSerializer):
            Users_CurrentBalance = User_Finances.objects.get(User = validated_data['User_id'])
 
            if (validated_data['Price'] * validated_data['Shares']) > Users_CurrentBalance.Current_Balance:
-               raise Exception('Not enough funds for this transaction.')
+               raise Exception('Insuffcient funds for this transaction.')
                
         
            User_SharesForCompany = Stocks.objects.filter(Symbol=validated_data['Symbol'], User_id = validated_data['User_id'])

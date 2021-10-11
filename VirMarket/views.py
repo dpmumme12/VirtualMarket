@@ -67,6 +67,9 @@ def CompanyPage(request, Symbol):
 
     url = f'https://sandbox.iexapis.com/stable/stock/{Symbol}/quote?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
     quote = requests.get(url).json()
+
+    url = f'https://cloud.iexapis.com/stable/stock/{Symbol}/company?token=pk_2bf7385198b8400582fd6b7f335e879f'
+    CompanyData = requests.get(url).json()
     
 
     
@@ -75,7 +78,13 @@ def CompanyPage(request, Symbol):
         'data': ChartData,
         'quote': quote,
         'UserId': request.user.id,
+        'CompanyData': CompanyData
     })
+
+def UserProfile(request):
+    
+    return render(request, 'Profile.html')
+
 
 ### Authentication Views ###
 def Register(request):
@@ -90,7 +99,7 @@ def Register(request):
             User_Finances.objects.create(User=request.user, Current_Balance = 100000.00)
             return HttpResponseRedirect(reverse('index'))
         else:
-            print(form.errors)
+            return render(request, 'register.html', {'UserForm': form})
 
     UserForm = SignUpForm()
     return render(request, 'register.html', {'UserForm': UserForm})

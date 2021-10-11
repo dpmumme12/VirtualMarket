@@ -1,13 +1,13 @@
-from rest_framework.parsers import JSONParser
 from .models import Stocks, Transactions, User_Finances
 from .serializers import StocksSerializer, TransactionsSerializer, User_FinancesSerializer, User_ProfileSerializer
 from rest_framework.response import Response
-from rest_framework import serializers, status
+from rest_framework import  status
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 
@@ -73,7 +73,7 @@ class User_InfoAPIView(APIView):
     def get(self, request):
         user_info = User.objects.get(id = request.user.id)
         serializer = User_ProfileSerializer(user_info)
-        return Response(serializer.data)
+        return Response(serializer.data, status = status.HTTP_202_ACCEPTED)
 
     def put(self, request):
         user = get_object_or_404(User, pk=request.user.id)

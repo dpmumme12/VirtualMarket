@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block main %}
+<div id="alert-wrapper" class="alert alert-success alert-dismissible" style="display: none;" role="alert">
+    <div id='alert-text'></div>
+    <button type="button" class="btn-close" onclick="closeAlert();" ></button>
+</div>
+
+<div class="container">
+    <div class="position-absolute top-50 start-50 translate-middle" >
+            <div class="padding-bottom-15">
+                <label for="Username">Username:</label>
+                <input type="text" class="form-control" id="Username">
+            </div>
+            <div class="padding-bottom-15">
+                <label for="FirstName">First Name:</label>
+                <input type="text" class="form-control" id="FirstName">
+            </div>
+            <div class="padding-bottom-15">
+                <label for="LastName">Last Name:</label>
+                <input type="text" class="form-control" id="LastName">
+            </div>
+            <div class="padding-bottom-15">
+                <label for="Email">Email:</label>
+                <input type="email" class="form-control" id="Email">
+            </div>
+            
+            <button type="submit" class="btn btn-primary" onclick="UpdateProfile();">Update</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>var token = '{{csrf_token}}';</script>
+<script src="{% static 'VirMarket/UserProfile.js' %}"></script>
+{% endblock %}

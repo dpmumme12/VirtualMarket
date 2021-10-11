@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('Stock/<str:Symbol>', views.CompanyPage, name='CompanyPage'),
+    path('Profile', views.UserProfile, name='UserProfile'),
 
 
 

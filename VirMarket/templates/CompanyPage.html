@@ -4,21 +4,23 @@
 
 {% block main %}
 
+<div id="alert-wrapper" class="alert alert-success alert-dismissible" style="display: none;" role="alert">
+    <div id='alert-text'></div>
+    <button type="button" class="btn-close" onclick="closeAlert();" ></button>
+</div>
+
 <div class='container'>
-    <div class="row align-items-start ">
+    <div class="row align-items-start" style="padding-top: 15px">
         <div class='col-sm-8'>
             <div>
-                <h1 style='text-align: left;'>{{quote.companyName}}</h1>
+                <div style="display: inline-block;"><h1 style='text-align: left; display: inline-block; padding-right: 10px;'>{{quote.companyName}}</h1><h2 style="display: inline-block;">({{quote.symbol}})</h2></div>
                 <h2 id='CurrentPrice'></h2>
                 <div style="margin-top: 15px;">
                     <canvas id='canvas'></canvas>
                 </div>
             </div>
-            <div>
-                <canvas id='canvas'></canvas>
-            </div>
         </div>
-        <div class="col-sm-4" >
+        <div class="col-sm-4">
             <div style="border-bottom: .2px solid lightgray;">
                 <h2>Statistics</h2>
             </div>
@@ -52,6 +54,14 @@
                     <button class="btn btn-success" type="button" id="SumbitButton" onclick="Transaction();">BUY</button>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="col-sm-8" style="padding-bottom: 30px;">
+        <div style="padding-top: 30px;">
+            <h2>Company Description</h2>
+        </div>
+        <div>
+            {{CompanyData.description}}
         </div>
     </div>
 </div>

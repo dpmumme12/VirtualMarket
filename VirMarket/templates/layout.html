@@ -12,37 +12,42 @@
             {% endblock %}</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-secondary bg-opacity-10">
             <div class="container-fluid">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <a class="navbar-brand" href="#">Navbar</a>
-              <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
-                  </li>
-                </ul>
+              {% if user.is_authenticated %}
+                <div class="nav-title"> 
+              {% else %}
+              <div class="nav-title" style="width: 100%;">
+              {% endif %}
+              <a class="navbar-brand" href="{% url 'index' %}" style="display: inline-block;"><h3 class="nav-heading">Virtual Market</h3></a>
               </div>
-              <div class="dropdown">
+              {% if user.is_authenticated %}
+                <div class="dropdown-search" >
+                  <input class="form-control me-2" type="search" placeholder="Search Symbol/Name..." aria-label="Search" id="SearchBar" onkeyup="SearchKeyUp();" onkeydown="SearchKeyDown();" onblur="SearchOnBlur();">
+                  <div id="MyDropdown" class="dropdown-content">
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <a  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle" style="color: black; font-size: 34px;"></i>
+                  </a>
+                
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="{% url 'UserProfile' %}"><i class="bi bi-person-fill" style="padding-right: 5px;"></i>My Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'Logout' %}"><i class="bi bi-box-arrow-in-left" style="padding-right: 5px;"></i>Logout</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="dropdown-search-mobile" >
                 <input class="form-control me-2" type="search" placeholder="Search Symbol/Name..." aria-label="Search" id="SearchBar" onkeyup="SearchKeyUp();" onkeydown="SearchKeyDown();" onblur="SearchOnBlur();">
                 <div id="MyDropdown" class="dropdown-content">
                 </div>
               </div>
-            </div>
+              {% else %}
+              {% endif %}
         </nav>
           
-        <div style="width: 100%; text-align: right;">
-        <a href="{% url 'Logout' %}">Logout</a>
-        </div>
-      
+        
         {% block main %}
         {% endblock %}
 

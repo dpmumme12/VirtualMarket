@@ -32,14 +32,14 @@ socket.onmessage = function(elem){
     var data = JSON.parse(elem.data);
     quote = data.response;
 
-    if (quote.iexRealtimePrice >= quote.open) {
+    if (quote.latestPrice >= quote.open) {
         document.getElementById('CurrentPrice').style.color = 'limegreen';
       }
       else {
         document.getElementById('CurrentPrice').style.color = 'red';
       }
  
-    document.getElementById('CurrentPrice').innerHTML = quote.iexRealtimePrice.toLocaleString('en-US', {
+    document.getElementById('CurrentPrice').innerHTML = quote.latestPrice.toLocaleString('en-US', {
         style: 'currency',
         currency: 'USD',
       });
@@ -82,7 +82,7 @@ function Transaction(){
 
     var shares = document.getElementById('SharesInput').value;
     const csrfToken = getCookie('csrftoken');
-    var price = Math.round((quote.iexRealtimePrice + Number.EPSILON) * 100) / 100
+    var price = Math.round((quote.latestPrice + Number.EPSILON) * 100) / 100
 
 
     fetch('/api/Transactions', {
@@ -110,24 +110,33 @@ function Transaction(){
         });
      })
     .then(resp => {
-        console.log(resp.data.error_message)
-        console.log(resp.status_code)
+        var response_status = resp.status_code;
         
-        // var successful = resp[0].Successful;
-
-        // if (successful === true) {
-        //     if (TransactionType === 'BUY'){
-        //         console.log('Purchased successfully')
-        //     }
-        //     else if (TransactionType === 'SELL') {
-        //         console.log('Sold successfully')
-        //     }
-        // }
-        // else {
-        //     console.log(resp[0].error_message)
-        // }
+        console.log(resp.data)
+    
+        if (response_status === 201) {
+            if (TransactionType === 'BUY'){
+                document.getElementById('alert-wrapper').className = 'alert alert-success alert-dismissible';
+                document.getElementById('alert-text').innerHTML = `<i class="bi bi-check-circle-fill" style="padding-right: 10px;"></i> ${shares} shares of ${quote.symbol} purchased successfully.`;
+                document.getElementById('alert-wrapper').style.display = 'block';
+            }
+            else if (TransactionType === 'SELL') {
+                document.getElementById('alert-wrapper').className = 'alert alert-success alert-dismissible';
+                document.getElementById('alert-text').innerHTML = `<i class="bi bi-check-circle-fill" style="padding-right: 10px;"></i> ${shares} shares of ${quote.symbol} sold successfully.`;
+                document.getElementById('alert-wrapper').style.display = 'block';
+            }
+        }
+        else if (response_status === 402) {
+            document.getElementById('alert-wrapper').className = 'alert alert-danger alert-dismissible';
+            document.getElementById('alert-text').innerHTML = `<i class="bi bi-exclamation-triangle-fill" style="padding-right: 10px;"></i> ${resp.data.error_message}`;
+            document.getElementById('alert-wrapper').style.display = 'block';
+        }
+        else {
+            document.getElementById('alert-wrapper').className = 'alert alert-danger alert-dismissible';
+            document.getElementById('alert-text').innerHTML = '<i class="bi bi-exclamation-triangle-fill" style="padding-right: 10px;"></i> Oops something has gone wrong.';
+            document.getElementById('alert-wrapper').style.display = 'block';
+        }
 
     })
     SumbitButton.disabled = false;
-
 }

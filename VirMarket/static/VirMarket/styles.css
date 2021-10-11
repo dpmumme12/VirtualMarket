@@ -6,6 +6,14 @@ h1{
     padding-top: 15px;
 }
 
+.padding-bottom-15{
+    padding-bottom: 15px;
+}
+
+.nav-heading{
+    display: inline-block;
+}
+
 .nav-link
 {
    color: black;
@@ -16,10 +24,22 @@ h1{
    text-decoration: underline;
 }
 
+.nav-title{
+    text-align: center;  
+    width: 80%;
+}
 
-.dropdown {
+.dropdown-search-mobile {
+    position: relative;
+    display: none;
+    padding-right: 20px;
+
+  }
+
+.dropdown-search {
     position: relative;
     display: inline-block;
+    padding-right: 20px;
   }
   
 .dropdown-content {
@@ -119,4 +139,8 @@ h1{
 
 @media all and (max-width:480px) {
     .news-image{display: block !important;}
+    .dropdown-search {display: none;}
+    .dropdown-search-mobile{display: block; margin-left: auto; margin-right: auto;}
+    .nav-title{width: 90%;}
+    .nav-heading{margin-left: 40px;}
 }

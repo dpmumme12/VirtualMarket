@@ -1,9 +1,24 @@
 {% extends 'layout.html' %}
 
 {% block main %}
-<form method="POST">
-    {% csrf_token %}
-    {{ LoginForm.as_p }}
-    <button type="submit">Submit</button>
-</form>
+
+{% if message %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle-fill" style="padding-right: 15px;"></i>{{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% else %}
+{% endif %}
+<div class="container">
+        <div class="position-absolute top-50 start-50 translate-middle" >
+            <form method="POST">
+                {% csrf_token %}
+                {{ LoginForm.as_p }}
+                <button class="btn btn-primary" type="submit">Log in</button>
+            </form>
+            <div style="padding-top: 5px;"><small>Don't have an account? <a href="{% url 'Register' %}" style="text-decoration: none;">Sign up</a></small></div>
+        </div>
+</div>
+    
+
 {% endblock %}
