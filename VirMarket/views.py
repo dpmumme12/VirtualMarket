@@ -8,7 +8,6 @@ from VirMarket_CS.models import User_Finances, Stocks, Transactions
 import requests
 from urllib import parse
 from django.core.paginator import Paginator
-from decimal import Decimal
 
 
 
@@ -16,13 +15,14 @@ from decimal import Decimal
 def index(request):
 
     objects = Transactions.objects.filter(User_id = request.user.id).order_by('-TransactionDateTime')
-    Users_Transactions = Paginator(objects, 15)
+    Users_Transactions = Paginator(objects, 20)
 
     page_number = request.GET.get('page')
     page_obj = Users_Transactions.get_page(page_number)
 
     queryset = Stocks.objects.filter(User_id = request.user.id).order_by('Symbol')
     UninvestedBalance = User_Finances.objects.get(User = request.user).Current_Balance
+   
     
     user_stocks = []
     for stock in queryset:
@@ -56,7 +56,8 @@ def index(request):
         'gainers': gainers,
         'losers': losers,
         'page_obj': page_obj,
-        'NewsArticles': NewsArticles})
+        'NewsArticles': NewsArticles,
+        'BuyingPower': UninvestedBalance})
 
 
 @login_required()

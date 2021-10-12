@@ -3,65 +3,81 @@
 {% load humanize %}
 
 {% block main %}
-
-<div id="alert-wrapper" class="alert alert-success alert-dismissible" style="display: none;" role="alert">
-    <div id='alert-text'></div>
-    <button type="button" class="btn-close" onclick="closeAlert();" ></button>
-</div>
-
-<div class='container'>
-    <div class="row align-items-start" style="padding-top: 15px">
-        <div class='col-sm-8'>
-            <div>
-                <div style="display: inline-block;"><h1 style='text-align: left; display: inline-block; padding-right: 10px;'>{{quote.companyName}}</h1><h2 style="display: inline-block;">({{quote.symbol}})</h2></div>
-                <h2 id='CurrentPrice'></h2>
-                <div style="margin-top: 15px;">
-                    <canvas id='canvas'></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div style="border-bottom: .2px solid lightgray;">
-                <h2>Statistics</h2>
-            </div>
-            <div class="row row-cols-2" style="padding-top: 10px;">
-                <div class="col stats-row"><h5>Open</h5><h5>{% if quote.open == None  %}--{% else %}${{quote.open|intcomma}}{% endif %}</h5></div>
-                <div class="col stats-row"><h5>Volume</h5><h5>{{quote.latestVolume|intword}}</h5></div>
-                <div class="col stats-row"><h5>Today's high</h5><h5>{% if quote.high == None  %}--{% else %}${{quote.high|intcomma}}{% endif %}</h5></div>
-                <div class="col stats-row"><h5>Average Volume</h5><h5>{{quote.avgTotalVolume|intword}}</h5></div>
-                <div class="col stats-row"><h5>Today's low</h5><h5>{% if quote.low == None  %}--{% else %}${{quote.low|intcomma}}{% endif %}</h5></div>
-                <div class="col stats-row"><h5>Market cap</h5><h5>{{quote.marketCap|intword}}</h5></div>
-                <div class="col stats-row"><h5>52 week high</h5><h5>{% if quote.week52High == None  %}--{% else %}${{quote.week52High|intcomma}} {% endif %}</h5></div>
-                <div class="col stats-row"><h5>52 week low</h5><h5>{% if quote.week52Low == None  %}--{% else %}${{quote.week52Low|intcomma}} {% endif %}</h5></div>
-            </div>
-            <div style="padding-top: 10px; text-align: center;">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="BuyButton" value="BUY" onclick="RadioGroupToggle();">
-                    <label class="form-check-label" for="BuyButton">BUY</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SellButton" value="SELL" onclick="RadioGroupToggle();">
-                    <label class="form-check-label" for="SellButton">SELL</label>
-                </div>
-                <div class="col-8 padding-top-10" style="margin: 0 auto;">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="SharesInput" placeholder="0" value="0">
-                        <button class="btn btn-outline-secondary col-2" type="button" onclick="RemoveShare();"><i class="bi bi-dash-lg"></i></button>
-                        <button class="btn btn-outline-secondary col-2" type="button" onclick="AddShare();"><i class="bi bi-plus-lg"></i></button>
-                    </div>
-                </div>
-                <div class="d-grid gap-2 padding-top-10">
-                    <button class="btn btn-success" type="button" id="SumbitButton" onclick="Transaction();">BUY</button>
-                </div>
+<div id="Loader">
+    <div class="container">
+        <div class="position-absolute top-50 start-50 translate-middle" >
+            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
             </div>
         </div>
     </div>
-    <div class="col-sm-8" style="padding-bottom: 30px;">
-        <div style="padding-top: 30px;">
-            <h2>Company Description</h2>
+</div>
+
+<div id="MainContent" style="display: none;">
+    <div id="alert-wrapper" class="alert alert-success alert-dismissible" style="display: none;" role="alert">
+        <div id='alert-text'></div>
+        <button type="button" class="btn-close" onclick="closeAlert();" ></button>
+    </div>
+
+    <div class='container'>
+        <nav style="--bs-breadcrumb-divider: '>'; padding-top: 5px;" aria-label="breadcrumb" >
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page" id="Breadcumb-Symbol">{{quote.companyName}}</li>
+            </ol>
+        </nav>
+        <div class="row align-items-start">
+            <div class='col-sm-8'>
+                <div>
+                    <div style="display: inline-block;"><h1 style='text-align: left; display: inline-block; padding-right: 10px;'>{{quote.companyName}}</h1><h2 style="display: inline-block;">({{quote.symbol}})</h2></div>
+                    <h2 id='CurrentPrice'></h2>
+                    <div style="margin-top: 15px;">
+                        <canvas id='canvas'></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div style="border-bottom: .2px solid lightgray;">
+                    <h2>Statistics</h2>
+                </div>
+                <div class="row row-cols-2" style="padding-top: 10px;">
+                    <div class="col stats-row"><h5>Open</h5><h5>{% if quote.open == None  %}--{% else %}${{quote.open|intcomma}}{% endif %}</h5></div>
+                    <div class="col stats-row"><h5>Volume</h5><h5>{{quote.latestVolume|intword}}</h5></div>
+                    <div class="col stats-row"><h5>Today's high</h5><h5>{% if quote.high == None  %}--{% else %}${{quote.high|intcomma}}{% endif %}</h5></div>
+                    <div class="col stats-row"><h5>Average Volume</h5><h5>{{quote.avgTotalVolume|intword}}</h5></div>
+                    <div class="col stats-row"><h5>Today's low</h5><h5>{% if quote.low == None  %}--{% else %}${{quote.low|intcomma}}{% endif %}</h5></div>
+                    <div class="col stats-row"><h5>Market cap</h5><h5>{{quote.marketCap|intword}}</h5></div>
+                    <div class="col stats-row"><h5>52 week high</h5><h5>{% if quote.week52High == None  %}--{% else %}${{quote.week52High|intcomma}} {% endif %}</h5></div>
+                    <div class="col stats-row"><h5>52 week low</h5><h5>{% if quote.week52Low == None  %}--{% else %}${{quote.week52Low|intcomma}} {% endif %}</h5></div>
+                </div>
+                <div style="padding-top: 10px; text-align: center;">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="BuyButton" value="BUY" onclick="RadioGroupToggle();">
+                        <label class="form-check-label" for="BuyButton">BUY</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SellButton" value="SELL" onclick="RadioGroupToggle();">
+                        <label class="form-check-label" for="SellButton">SELL</label>
+                    </div>
+                    <div class="col-8 padding-top-10" style="margin: 0 auto;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="SharesInput" placeholder="0" value="0">
+                            <button class="btn btn-outline-secondary col-2" type="button" onclick="RemoveShare();"><i class="bi bi-dash-lg"></i></button>
+                            <button class="btn btn-outline-secondary col-2" type="button" onclick="AddShare();"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 padding-top-10">
+                        <button class="btn btn-success" type="button" id="SumbitButton" onclick="Transaction();">BUY</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            {{CompanyData.description}}
+        <div class="col-sm-8" style="padding-bottom: 30px;">
+            <div style="padding-top: 30px;">
+                <h2>Company Description</h2>
+            </div>
+            <div>
+                {{CompanyData.description}}
+            </div>
         </div>
     </div>
 </div>

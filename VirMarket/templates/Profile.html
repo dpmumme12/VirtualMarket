@@ -8,6 +8,12 @@
 </div>
 
 <div class="container">
+    <nav style="--bs-breadcrumb-divider: '>'; padding-top: 5px;" aria-label="breadcrumb" >
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page" id="Breadcumb-Symbol">Profile</li>
+        </ol>
+      </nav>
     <div class="position-absolute top-50 start-50 translate-middle" >
             <div class="padding-bottom-15">
                 <label for="Username">Username:</label>

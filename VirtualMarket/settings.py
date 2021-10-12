@@ -84,8 +84,12 @@ ASGI_APPLICATION = 'VirtualMarket.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd302epthgk903m',
+        'USER': 'lhzzhxaydycgye',
+        'PASSWORD': '0346dd66e683374298c85271687042fb30fc2b25ddf9a9485130e215dfc949cd',
+        'HOST': 'ec2-3-221-100-217.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 

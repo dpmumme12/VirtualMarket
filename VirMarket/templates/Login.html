@@ -11,6 +11,7 @@
 {% endif %}
 <div class="container">
         <div class="position-absolute top-50 start-50 translate-middle" >
+            <div class="padding-bottom-15" style="text-align: center;"><h1>Log In</h1></div>
             <form method="POST">
                 {% csrf_token %}
                 {{ LoginForm.as_p }}

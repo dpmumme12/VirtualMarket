@@ -1,3 +1,7 @@
+window.addEventListener('DOMContentLoaded', (event) => {
+  setTimeout(DomLoaded, 1000);
+});
+
 const data = JSON.parse(document.getElementById('mydata').textContent);
 const id = JSON.parse(document.getElementById('key').textContent);
 const TotalAccountBalance = document.getElementById('TotalAccountBalance');
@@ -18,15 +22,21 @@ fetch('/api/Stocks')
 .then(response => response.json())
 .then(data => {
     var stocks = data
-    for (let stock of stocks){
-        document.getElementById('StocksTableBody').innerHTML += `
-        <tr style="position: relative; ">
-            <td>${stock.Symbol}</td>
-            <td>${stock.Shares}</td>
-            <td id='${stock.Symbol.toUpperCase()}-price'></td>
-            <td><a href="Stock/${stock.Symbol}" class="stretched-link"></a></td>
-        </tr>`
-    };
+    if (stocks.length === 0){
+      document.getElementById('StocksTableBody').innerHTML += '<p>No positions held...</p>';
+    }
+    else {
+      document.getElementById('StocksTableBody').innerHTML = '';
+      for (let stock of stocks){
+          document.getElementById('StocksTableBody').innerHTML += `
+          <tr style="position: relative; ">
+              <td>${stock.Symbol}</td>
+              <td>${stock.Shares}</td>
+              <td id='${stock.Symbol.toUpperCase()}-price'></td>
+              <td><a href="Stock/${stock.Symbol}" class="stretched-link"></a></td>
+          </tr>`;
+      }
+    }
 });
 
 
@@ -82,17 +92,21 @@ socket.onmessage = function(elem){
 
       myChart.update();
      
-      
-      for(let stock in stocks) {
-          if (stocks[stock].quote.latestPrice >= stocks[stock].quote.open) {
-            document.getElementById(`${stock}-price`).style.color = 'limegreen';
-          }
-          else {
-            document.getElementById(`${stock}-price`).style.color = 'red';
-          }
-          document.getElementById(`${stock}-price`).innerHTML = stocks[stock].quote.latestPrice.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          });
-      }  
+      try {
+        for(let stock in stocks) {
+            if (stocks[stock].quote.latestPrice >= stocks[stock].quote.open) {
+              document.getElementById(`${stock}-price`).style.color = 'limegreen';
+            }
+            else {
+              document.getElementById(`${stock}-price`).style.color = 'red';
+            }
+            document.getElementById(`${stock}-price`).innerHTML = stocks[stock].quote.latestPrice.toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD',
+            });
+        }  
+      }
+      catch{
+        //pass
+      }
 }

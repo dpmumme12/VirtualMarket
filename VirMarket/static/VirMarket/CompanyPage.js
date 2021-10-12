@@ -1,9 +1,12 @@
+window.addEventListener('DOMContentLoaded', (event) => {
+    setTimeout(DomLoaded, 1000);
+  });
+
 const data = JSON.parse(document.getElementById('mydata').textContent);
 const UserId = JSON.parse(document.getElementById('Id').textContent);
 const symbol = JSON.parse(document.getElementById('symbol').textContent);
 document.getElementById('BuyButton').checked = true;
 var TransactionType = document.getElementById('BuyButton').value;
-
 
 
 var times = data.map(function(elem){
@@ -25,7 +28,7 @@ var GraphData = GetGraphData(times, prices, LineColor);
 var ctx = document.getElementById('canvas').getContext('2d');
 var myChart = new Chart(ctx, GraphData);
 
-var socket = new WebSocket(`ws://${window.location.host}/ws/stockgraph/${symbol}/`);
+var socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
 
 var quote;
 
