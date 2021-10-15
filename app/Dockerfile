@@ -1,6 +1,10 @@
 FROM python:3.10
 
+
+
 RUN mkdir -p /home/app
+
+
 
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
