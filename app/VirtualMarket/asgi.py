@@ -21,7 +21,6 @@ from VirMarket.routing import ws_urlpatterns
 
 
 application = ProtocolTypeRouter({
-    'http': django_asgi_app,
     'websocket': AuthMiddlewareStack(URLRouter(ws_urlpatterns))
 })
 

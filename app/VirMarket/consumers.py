@@ -1,4 +1,3 @@
-from re import T
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from asyncio import sleep
