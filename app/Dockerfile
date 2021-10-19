@@ -15,7 +15,6 @@ RUN apk update && apk upgrade
 RUN apk add postgresql-dev \
     gcc \
     musl-dev \
-    linux-headers \ 
     libc-dev \
     openldap \
     libcurl \
@@ -45,7 +44,7 @@ RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
 # install dependencies
-RUN apk add  libpq
+RUN apk add libpq
 
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt requirements.txt
