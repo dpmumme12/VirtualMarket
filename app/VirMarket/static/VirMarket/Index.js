@@ -40,8 +40,9 @@ fetch('/api/Stocks')
 });
 
 
-
 var socket = new WebSocket(`ws://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
+
+
 
 socket.onmessage = function(elem){
     var resp = JSON.parse(elem.data);

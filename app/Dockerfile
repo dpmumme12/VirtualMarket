@@ -3,37 +3,9 @@
 ###########
 
 # pull official base image
-FROM python:3.10-alpine as builder
+FROM ubuntu:20.04
 
 WORKDIR /usr/src/app
-
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-RUN apk update && apk upgrade
-RUN apk add postgresql-dev \
-    gcc \
-    musl-dev \
-    libc-dev \
-    openldap \
-    libcurl \
-    gpgme-dev \
-    python3-dev 
-
-RUN pip install --upgrade pip
-COPY . .
-
-# install dependencies
-COPY requirements.txt requirements.txt
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
-
-
-#########
-# FINAL #
-#########
-
-FROM python:3.10-alpine
 
 RUN mkdir -p /home/app
 
@@ -43,11 +15,23 @@ RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
-# install dependencies
-RUN apk add libpq
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt requirements.txt
-RUN pip install --no-cache /wheels/*
+RUN apt-get update
+RUN apt-get -y upgrade
+
+RUN apt-get install -y python3
+RUN apt-get install -y python3-pip
+
+
+RUN pip3 install --upgrade pip
+
+
+# install dependencies
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
 COPY . $APP_HOME
+
