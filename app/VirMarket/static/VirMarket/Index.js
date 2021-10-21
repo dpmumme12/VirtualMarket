@@ -42,9 +42,29 @@ fetch('/api/Stocks')
 
 var socket = new WebSocket(`ws://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
 
+socket.onerror = function(){
+  setTimeout(function(){}, 1000);
+  socket = new WebSocket(`ws://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
+  
+  socket.onerror = function(){
+    setTimeout(function(){}, 1000);
+    
+    socket = new WebSocket(`ws://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
+  
+    socket.onmessage = function(elem){socketmessage(elem);}
+  
+  }
+
+  socket.onmessage = function(elem){socketmessage(elem);}
+
+}
 
 
-socket.onmessage = function(elem){
+
+socket.onmessage = function(elem){socketmessage(elem);}
+
+
+function socketmessage(elem){
     var resp = JSON.parse(elem.data);
     var stocks = resp.stocks;
     
