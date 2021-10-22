@@ -10,7 +10,6 @@ class StockGraphConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         symbol = self.scope['url_route']['kwargs']['symbol']
-        print(symbol)
 
         async with aiohttp.ClientSession() as session:
 

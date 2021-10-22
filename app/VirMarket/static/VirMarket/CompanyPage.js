@@ -28,26 +28,7 @@ var GraphData = GetGraphData(times, prices, LineColor);
 var ctx = document.getElementById('canvas').getContext('2d');
 var myChart = new Chart(ctx, GraphData);
 
-var socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
-
 var quote;
-
-socket.onmessage = function(elem){
-    var data = JSON.parse(elem.data);
-    quote = data.response;
-
-    if (quote.latestPrice >= quote.open) {
-        document.getElementById('CurrentPrice').style.color = 'limegreen';
-      }
-      else {
-        document.getElementById('CurrentPrice').style.color = 'red';
-      }
- 
-    document.getElementById('CurrentPrice').innerHTML = quote.latestPrice.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      });
-}
 
 function RadioGroupToggle(){
     var BuyButton = document.getElementById('BuyButton');
@@ -143,4 +124,45 @@ function Transaction(){
 
     })
     SumbitButton.disabled = false;
+}
+
+
+
+var socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
+
+socket.onerror = function(){
+    setTimeout(function(){}, 1000);
+    socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
+    
+    socket.onerror = function(){
+      setTimeout(function(){}, 1000);
+      
+      socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
+    
+      socket.onmessage = function(elem){StockSocketMessage(elem);}
+    
+    }
+  
+    socket.onmessage = function(elem){StockSocketMessage(elem);}
+  
+  }
+
+socket.onmessage = function(elem){StockSocketMessage(elem);}
+
+
+function StockSocketMessage(elem){
+    var data = JSON.parse(elem.data);
+    quote = data.response;
+
+    if (quote.latestPrice >= quote.open) {
+        document.getElementById('CurrentPrice').style.color = 'limegreen';
+      }
+      else {
+        document.getElementById('CurrentPrice').style.color = 'red';
+      }
+ 
+    document.getElementById('CurrentPrice').innerHTML = quote.latestPrice.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
 }

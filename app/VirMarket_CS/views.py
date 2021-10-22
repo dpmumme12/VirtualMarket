@@ -21,7 +21,7 @@ class StockTransactionAPIView(APIView):
     def get(self, request):
         get_transactions = Transactions.objects.filter(User_id = request.user.id)
         serializer = TransactionsSerializer(get_transactions, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         
@@ -47,7 +47,7 @@ class StocksAPIView(APIView):
     def get(self, request):
         get_stocks = Stocks.objects.filter(User_id = request.user.id)
         serializer = StocksSerializer(get_stocks, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class User_FinancesAPIView(APIView):
@@ -61,7 +61,7 @@ class User_FinancesAPIView(APIView):
         user = User.objects.get(id=request.user.id)
         get_user = User_Finances.objects.get(User=user)
         serializer = User_FinancesSerializer(get_user)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class User_InfoAPIView(APIView):
@@ -73,7 +73,7 @@ class User_InfoAPIView(APIView):
     def get(self, request):
         user_info = User.objects.get(id = request.user.id)
         serializer = User_ProfileSerializer(user_info)
-        return Response(serializer.data, status = status.HTTP_202_ACCEPTED)
+        return Response(serializer.data, status = status.HTTP_200_OK)
 
     def put(self, request):
         user = get_object_or_404(User, pk=request.user.id)
