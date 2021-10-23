@@ -1,2 +1,20 @@
-docker build --tag virtual-market .
-docker run --publish 8000:8000 virtual-market
+### Clears all images and build cache ###
+docker system prune -a
+
+### Build the images and starts containers ###
+docker-compose -f docker-compose.yml up -d --build
+
+### Running django command against the web service to collectic static files ### 
+docker-compose -f docker-compose.yml exec web python3 manage.py collectstatic --no-input --clear
+
+### see all running containers ###
+docker-compose ps
+
+### Shutdown and remove all socker conatiners ##
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+
+### Copy iles to DigitalOcean Droplet ###
+scp -r VirtualMarket root@143.198.19.241:~
+
+###

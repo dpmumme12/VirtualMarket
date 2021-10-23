@@ -74,7 +74,7 @@ function RemoveShare(){
 //logic to run when the user hits the Buy/Sell button to make the transaction
 function Transaction(){
     var SumbitButton = document.getElementById("SumbitButton");
-    SumbitButton.disabled = true;
+    //SumbitButton.disabled = true;
 
     var shares = document.getElementById('SharesInput').value;
     const csrfToken = getCookie('csrftoken');
@@ -107,8 +107,6 @@ function Transaction(){
      })
     .then(resp => {
         var response_status = resp.status_code;
-        
-        console.log(resp.data)
     
         if (response_status === 201) {
             if (TransactionType === 'BUY'){
@@ -134,7 +132,7 @@ function Transaction(){
         }
 
     })
-    SumbitButton.disabled = false;
+    //SumbitButton.disabled = false;
 }
 
 
