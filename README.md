@@ -6,7 +6,7 @@ and are allowed to invest it in whatever they want and see if they an increase t
 the interanl API's. It also use's websocket to provide realtime prices and data by the second. Check out the link at the bottom to try it out!
 
 ### ==Files and directories==
-- `app` - The Dajgo app that runs the project
+- `app` - The main Django app that runs the project
   - `VirMarket` - The "front end app" that serves users the pages and handles all logic associated with the enduser of the web app.
     - `static/VirMarket` - Contains all static files.
       - `images` - Folder that holds the images used in the app
