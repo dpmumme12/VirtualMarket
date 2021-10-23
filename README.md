@@ -16,8 +16,8 @@ the interanl API's. It also use's websockets to provide realtime prices and data
       - `styles.css` - Contains all the css for the app.
       - `UserProfile.js` - Script for the 'Profile.html' template.
     - `template/auctions` - Contains all html files for the app.
-      - `CompanyPage.html` - The company page for a stock showing all of the data for the comapny and where a user can buy/sell the stock.
-      - `index.html` - Homepage that shows the user's balance as well as their current investments and transaction history.
+      - `CompanyPage.html` - The company page for a stock showing all of the data for the company and where a user can buy/sell the stock.
+      - `index.html` - Homepage that shows the users balance as well as their current investments and transaction history.
       - `layout.html` - The base template that all other templates extend.
       - `Login.html` - The login page where a user can sign into their account.
       - `Profile.html` - The user profile page where a user can see their profile info and update it.
