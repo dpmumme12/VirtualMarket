@@ -6,7 +6,13 @@ from VirMarket_CS.models import Stocks, User_Finances
 from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 
+###################################
+### Websocket connections views ###
+###################################
+
 class StockGraphConsumer(AsyncWebsocketConsumer):
+    """ Websocket that constantly sends data for a stock every second """
+
     async def connect(self):
         await self.accept()
         symbol = self.scope['url_route']['kwargs']['symbol']
@@ -24,6 +30,9 @@ class StockGraphConsumer(AsyncWebsocketConsumer):
 
 
 class UserTotalAccountBalanceConsumer(AsyncWebsocketConsumer):
+    """ Websocket that constantly sends updated UserTotalAccount Balance as well 
+        as the latest price for every stock they are invested in """
+        
     async def connect(self):
         
         await self.accept()

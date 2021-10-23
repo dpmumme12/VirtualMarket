@@ -8,23 +8,30 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-
-# Create your views here.
+##############################
+### Internal API endpoints ###
+##############################
 
 class StockTransactionAPIView(APIView):
+    """API endpoint to handle all transactions the user makes such as Buying or Selling stocks"""
 
+    ### Setting the authentication for the endpoint ###
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
+    ### declaring the serializer class associated to this endpoint ###
     serializer_class = TransactionsSerializer
 
     def get(self, request):
+        """Gets all transactions the user has made"""
+
         get_transactions = Transactions.objects.filter(User_id = request.user.id)
         serializer = TransactionsSerializer(get_transactions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        
+        """Handles the Buying and Selling of stocks"""
+
         serializer = TransactionsSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -38,10 +45,13 @@ class StockTransactionAPIView(APIView):
 
 
 class StocksAPIView(APIView):
+    """API endpoint to get all of the stocks the user is currently invested in"""
 
+    ### Setting the authentication for the endpoint ###
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
+    ### declaring the serializer class associated to this endpoint ###
     serializer_class = StocksSerializer
 
     def get(self, request):
@@ -51,10 +61,13 @@ class StocksAPIView(APIView):
 
 
 class User_FinancesAPIView(APIView):
+    """API endpoint to get the user's current account balance"""
 
+    ### Setting the authentication for the endpoint ###
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
+    ### declaring the serializer class associated to this endpoint ###
     serializer_class = User_Finances
 
     def get(self, request):
@@ -65,7 +78,9 @@ class User_FinancesAPIView(APIView):
 
 
 class User_InfoAPIView(APIView):
+    """API endpoint to get user's progile info as well as update it"""
 
+    ### Setting the authentication for the endpoint ###
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     

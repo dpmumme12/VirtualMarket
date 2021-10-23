@@ -1,7 +1,12 @@
+//////////////////////////////////////////////////////
+/// Script for the company page "CompanyPage.html" ///
+//////////////////////////////////////////////////////
+
 window.addEventListener('DOMContentLoaded', (event) => {
     setTimeout(DomLoaded, 1000);
   });
 
+//intialize's variable to be used in script
 const data = JSON.parse(document.getElementById('mydata').textContent);
 const UserId = JSON.parse(document.getElementById('Id').textContent);
 const symbol = JSON.parse(document.getElementById('symbol').textContent);
@@ -23,13 +28,16 @@ else{
     LineColor = 'limegreen'
 }
 
+//initialize's graph
 var GraphData = GetGraphData(times, prices, LineColor);
 
 var ctx = document.getElementById('canvas').getContext('2d');
 var myChart = new Chart(ctx, GraphData);
 
+
 var quote;
 
+//switches the TransactionType variable to what the user selects
 function RadioGroupToggle(){
     var BuyButton = document.getElementById('BuyButton');
     var SellButton = document.getElementById('SellButton');
@@ -46,12 +54,14 @@ function RadioGroupToggle(){
     }
 }
 
+//increments the shares a user is trying to buy/sell by 1
 function AddShare(){
      var num = document.getElementById('SharesInput').value;
      var shares = parseInt(num) + 1;
      document.getElementById('SharesInput').value = shares.toString();
 }
 
+//decreases the shares the user is trying to but/sell by 1
 function RemoveShare(){
     var num = document.getElementById('SharesInput').value;
     if (parseInt(num) === 0){
@@ -61,6 +71,7 @@ function RemoveShare(){
     document.getElementById('SharesInput').value = shares.toString();
 }
 
+//logic to run when the user hits the Buy/Sell button to make the transaction
 function Transaction(){
     var SumbitButton = document.getElementById("SumbitButton");
     SumbitButton.disabled = true;
@@ -127,9 +138,10 @@ function Transaction(){
 }
 
 
-
+//intialieze's websocket connection
 var socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
 
+//retries twice if websocket connection fails
 socket.onerror = function(){
     setTimeout(function(){}, 1000);
     socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
@@ -149,7 +161,7 @@ socket.onerror = function(){
 
 socket.onmessage = function(elem){StockSocketMessage(elem);}
 
-
+//logic to run when we recieve data from websocket
 function StockSocketMessage(elem){
     var data = JSON.parse(elem.data);
     quote = data.response;

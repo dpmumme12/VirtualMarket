@@ -1,3 +1,8 @@
+///////////////////////////////////////////////////////
+/// Script for the User profile page "Profile.html" ///
+///////////////////////////////////////////////////////
+
+//gets the user's info from specifies internal API endpoint
 fetch('/api/UserInfo')
 .then(response => response.json())
 .then(data => {
@@ -9,6 +14,7 @@ fetch('/api/UserInfo')
     document.getElementById('Email').value = UserInfo.email;
 });
 
+//updates user profile
 function UpdateProfile(){
     const csrfToken = getCookie('csrftoken');
 

@@ -1,6 +1,13 @@
+///////////////////////////////////////////////////////////////////////////
+/// Script for layout.html and provides functions used in other scripts ///
+//////////////////////////////////////////////////////////////////////////
+
+//set timeout variabels for the searchbar
 var typingTimer;
 var blurtimeout;
 var doneTypingInterval = 400;
+
+//functions to handle the stocks/symbol searchbox
 
 function SearchKeyUp() {
     clearTimeout(typingTimer);
@@ -49,6 +56,8 @@ function SearchQuery() {
     });
 }
 
+
+//function to initalize graph
 function GetGraphData(times, prices, LineColor) {
     var GraphData = {
         type: 'line',
@@ -103,6 +112,8 @@ function GetGraphData(times, prices, LineColor) {
     return GraphData;
 }
 
+
+//formats a time of day for current date. ex: 10:20pm
 function formatAMPM(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -114,7 +125,9 @@ function formatAMPM(date) {
     return strTime;
   }
 
-  function getCookie(name) {
+
+//takse cookie name input and gets a cookie from browser if it exists 
+function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
@@ -130,6 +143,7 @@ function formatAMPM(date) {
     return cookieValue;
 }
 
+//close's alerts
 function closeAlert(){
     document.getElementById('alert-wrapper').style.display = 'none';
 }

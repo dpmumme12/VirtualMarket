@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .forms import SignUpForm, LoginForm
@@ -8,7 +8,6 @@ from VirMarket_CS.models import User_Finances, Stocks, Transactions
 import requests
 from urllib import parse
 from django.core.paginator import Paginator
-
 
 
 @login_required()
@@ -71,9 +70,6 @@ def CompanyPage(request, Symbol):
     url = f'https://cloud.iexapis.com/stable/stock/{Symbol}/company?token=pk_2bf7385198b8400582fd6b7f335e879f'
     CompanyData = requests.get(url).json()
     
-
-    
-
     return render(request, 'CompanyPage.html', {
         'data': ChartData,
         'quote': quote,
@@ -82,11 +78,13 @@ def CompanyPage(request, Symbol):
     })
 
 def UserProfile(request):
-    
     return render(request, 'Profile.html')
 
 
+############################
 ### Authentication Views ###
+############################
+
 def Register(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)

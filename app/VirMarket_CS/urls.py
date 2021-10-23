@@ -1,7 +1,7 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
-
+### Internal API routes ### 
 
 urlpatterns = [
     path('Transactions', views.StockTransactionAPIView.as_view(), name = 'TransacionsAPI'),

@@ -8,7 +8,6 @@ urlpatterns = [
     path('Profile', views.UserProfile, name='UserProfile'),
 
 
-
     ### Authentication Paths ###
     path('Register', views.Register, name='Register'),
     path('Login', views.Login, name='Login'),

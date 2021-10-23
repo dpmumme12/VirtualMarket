@@ -1,7 +1,13 @@
+/////////////////////////////////////////////
+/// Script for the Home page "index.html" ///
+/////////////////////////////////////////////
+
 window.addEventListener('DOMContentLoaded', (event) => {
   setTimeout(DomLoaded, 1000);
 });
 
+
+// Declaring the variables used in script
 const data = JSON.parse(document.getElementById('mydata').textContent);
 const id = JSON.parse(document.getElementById('key').textContent);
 const TotalAccountBalance = document.getElementById('TotalAccountBalance');
@@ -11,13 +17,13 @@ var prices =  [data];
 var LineColor = 'limegreen'
 var CurrentLabelToPop = times[0];
 
-
+// intializes graph
 var GraphData = GetGraphData(times, prices, LineColor);
 
 var ctx = document.getElementById('canvas').getContext('2d');
 var myChart = new Chart(ctx, GraphData);
 
-
+//fetches the stocks teh user is currently invested in from the internal API endpoint
 fetch('/api/Stocks')
 .then(response => response.json())
 .then(data => {
@@ -39,9 +45,10 @@ fetch('/api/Stocks')
     }
 });
 
-
+//initalizes websocket connection
 var socket = new WebSocket(`ws://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
 
+//Retries twice if the connection to websocket fails
 socket.onerror = function(){
   setTimeout(function(){}, 1000);
   socket = new WebSocket(`ws://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
@@ -59,11 +66,9 @@ socket.onerror = function(){
 
 }
 
-
-
 socket.onmessage = function(elem){socketmessage(elem);}
 
-
+//logic to run whenever the websocket sends data
 function socketmessage(elem){
     var resp = JSON.parse(elem.data);
     var stocks = resp.stocks;

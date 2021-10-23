@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wafyuwefbhb43'#os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 1 #int(os.environ.get("DEBUG", default=0))
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(',')
 
 
 # Application definition
@@ -88,10 +88,10 @@ ASGI_APPLICATION = 'VirtualMarket.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd302epthgk903m',
-        'USER': 'lhzzhxaydycgye',
-        'PASSWORD': '0346dd66e683374298c85271687042fb30fc2b25ddf9a9485130e215dfc949cd',
-        'HOST': 'ec2-3-221-100-217.compute-1.amazonaws.com',
+        'NAME': os.environ.get('Postgres_Database_NAME'),
+        'USER': os.environ.get('Postgres_USER'),
+        'PASSWORD': os.environ.get('Postgres_PASSWORD'),
+        'HOST': os.environ.get('Postgres_HOST'),
         'PORT': '5432',
     }
 }
