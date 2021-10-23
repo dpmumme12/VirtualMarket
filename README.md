@@ -42,7 +42,7 @@ the interanl API's. It also use's websockets to provide realtime prices and data
     - `urls.py` -  The main routing file that maps the incoming urls to the appropriate app.
     - `wsgi.py` - Sets up the wsgi server to be used in the project.
   - `Dockerfile` - Dockerfile that builds the image for the Django app.
-  - `requirements.txt` -  Holds all of the dependencies for required for the app to run.
+  - `requirements.txt` -  Holds all of the dependencies required for the app to run.
 - `nginx` - The nginx server that works as reverse proxy for the Django app.
   - `Dockerfile` - Dockerfile to build the image for nginx.
   - `nginx.conf` - The configuration file to set upp the nginx server.
