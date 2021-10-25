@@ -135,9 +135,10 @@ function Transaction(){
     //SumbitButton.disabled = false;
 }
 
+var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 
 //intialieze's websocket connection
-var socket = new WebSocket(`ws://${window.location.host}/ws/stock/${symbol}/`);
+var socket = new WebSocket(`${ws_scheme}://${window.location.host}/ws/stock/${symbol}/`);
 
 //retries twice if websocket connection fails
 socket.onerror = function(){

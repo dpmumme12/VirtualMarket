@@ -27,6 +27,7 @@ services:
       - static_volume:/home/app/web/staticfiles
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - web
       - channels

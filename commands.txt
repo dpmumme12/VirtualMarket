@@ -17,4 +17,11 @@ docker rm $(docker ps -a -q)
 ### Copy iles to DigitalOcean Droplet ###
 scp -r VirtualMarket root@143.198.19.241:~
 
-###
+### ssh into server ###
+ssh root@143.198.19.241
+
+### bash into container ###
+docker exec -it <frontend_container> bash
+
+### Certbot generate ssl certs ###
+certbot --nginx -d domain.com -d www.domain.com

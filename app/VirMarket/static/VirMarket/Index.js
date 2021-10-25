@@ -45,8 +45,10 @@ fetch('/api/Stocks')
     }
 });
 
+var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+
 //initalizes websocket connection
-var socket = new WebSocket(`ws://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
+var socket = new WebSocket(`${ws_scheme}://${window.location.host}/ws/UserTotalAccountBalance/${id}/`);
 
 //Retries twice if the connection to websocket fails
 socket.onerror = function(){
