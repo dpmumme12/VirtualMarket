@@ -51,4 +51,4 @@ the interanl API's. It also use's websockets to provide realtime prices and data
 - `docker-compose.yml` - File to build the docker images and how the images should be configured.
 
 
-Demo link 
+Link: https://virmarket.net

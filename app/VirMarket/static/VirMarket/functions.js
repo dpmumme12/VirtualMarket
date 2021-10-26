@@ -7,6 +7,15 @@ var typingTimer;
 var blurtimeout;
 var doneTypingInterval = 400;
 
+if (screen.width > 480){
+    var SearchDropdownId = 'MyDropdown';
+    var SearchInputId = 'SearchBar';
+}
+else{
+    var SearchDropdownId = 'MyDropdown-Mobile';
+    var SearchInputId = 'SearchBar-Mobile';
+}
+
 //functions to handle the stocks/symbol searchbox
 
 function SearchKeyUp() {
@@ -23,15 +32,15 @@ function SearchOnBlur(){
 }
 
 function clearSearchBar(){
-    document.getElementById('SearchBar').value = '';
-    document.getElementById('MyDropdown').innerHTML = '';
+    document.getElementById(SearchInputId).value = '';
+    document.getElementById(SearchDropdownId).innerHTML = '';
 }
 
 
 function SearchQuery() {
-    document.getElementById('MyDropdown').innerHTML = '';
+    document.getElementById(SearchDropdownId).innerHTML = '';
 
-    var query = document.getElementById('SearchBar').value.toUpperCase();
+    var query = document.getElementById(SearchInputId).value.toUpperCase();
 
     if (query === ''){
         return
@@ -50,7 +59,7 @@ function SearchQuery() {
                 //pass
             }
             else{
-                document.getElementById('MyDropdown').innerHTML += `<a tabIndex="-1" href="${'/Stock/' + Stocks[i].symbol}" class="Dropdown-Item">${Stocks[i].symbol}<p class="SearchDescription">${Stocks[i].description}</p></a>`;
+                document.getElementById(SearchDropdownId).innerHTML += `<a tabIndex="-1" href="${'/Stock/' + Stocks[i].symbol}" class="Dropdown-Item">${Stocks[i].symbol}<p class="SearchDescription">${Stocks[i].description}</p></a>`;
             }
         }
     });

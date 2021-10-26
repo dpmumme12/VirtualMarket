@@ -21,12 +21,12 @@ var prices = data.map(function(elem){
     return elem.high;
 });
 
-if (data.at(0).open > data.at(-1).high){
-    LineColor = 'red'
+if (data[0].open > data[data.length - 1].high){
+    LineColor = 'red';
 }
 else{
-    LineColor = 'limegreen'
-}
+    LineColor = 'limegreen';
+};
 
 //initialize's graph
 var GraphData = GetGraphData(times, prices, LineColor);
