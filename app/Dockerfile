@@ -1,6 +1,3 @@
-###########
-# BUILDER #
-###########
 
 # pull official base image
 FROM ubuntu:20.04
