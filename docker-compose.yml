@@ -9,7 +9,7 @@ services:
     expose:
       - 8000
     env_file:
-      - ./.env.dev
+      - ./.env
 
   channels:
     build: ./app
@@ -19,7 +19,7 @@ services:
     expose:
       - 8001
     env_file:
-      - ./.env.dev
+      - ./.env
 
   nginx:
     build: ./nginx

@@ -13,6 +13,21 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import sys
 import os
+import json
+from django.core.exceptions import ImproperlyConfigured
+
+
+# JSON-based secrets module
+with open('env.json') as f:
+    env_vars = json.load(f)
+
+def get_env_var(var, env_vars=env_vars):
+    '''Get the secret variable or return explicit exception.'''
+    try:
+        return env_vars[var]
+    except KeyError:
+        error_msg = f'Set the {var} environment variable'
+    raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,12 +38,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = get_env_var("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = get_env_var("DEBUG")
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(',')
+ALLOWED_HOSTS = get_env_var('DJANGO_ALLOWED_HOSTS')
 
 
 # Application definition
@@ -46,7 +61,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'channels',
+    'debug_toolbar',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
@@ -88,10 +112,10 @@ ASGI_APPLICATION = 'VirtualMarket.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('Postgres_Database_NAME'),
-        'USER': os.environ.get('Postgres_USER'),
-        'PASSWORD': os.environ.get('Postgres_PASSWORD'),
-        'HOST': os.environ.get('Postgres_HOST'),
+        'NAME': get_env_var('Postgres_Database_NAME'),
+        'USER': get_env_var('Postgres_USER'),
+        'PASSWORD': get_env_var('Postgres_PASSWORD'),
+        'HOST': get_env_var('Postgres_HOST'),
         'PORT': '5432',
     }
 }
@@ -101,6 +125,15 @@ if 'test' in sys.argv:
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'TestDB'
     }
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
 
 
 
@@ -121,6 +154,19 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    }
+}
 
 
 # Internationalization
@@ -147,3 +193,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INTERNAL_IPS = [ 
+    '127.0.0.1',
+]
