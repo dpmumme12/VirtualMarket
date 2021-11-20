@@ -16,13 +16,16 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from allauth.socialaccount.providers.oauth2.urls import default_urlpatterns
+from allauth.socialaccount.providers.google.provider import GoogleProvider
 
 urlpatterns = [
     path('', include('VirMarket.urls')),
     path('api/', include('VirMarket_CS.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
 ]
+
+urlpatterns += default_urlpatterns(GoogleProvider)
 
 if settings.DEBUG:
     import debug_toolbar

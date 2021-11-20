@@ -1,4 +1,6 @@
 {% extends 'layout.html' %}
+{% load static %}
+{% load socialaccount %}
 
 {% block title %}
 VirtualMarket-Login
@@ -19,9 +21,26 @@ VirtualMarket-Login
             <form method="POST">
                 {% csrf_token %}
                 {{ LoginForm.as_p }}
-                <button class="btn btn-primary" type="submit">Log in</button>
+                <button class="btn btn-primary"  type="submit">Log in</button>
             </form>
-            <div style="padding-top: 5px;"><small>Don't have an account? <a href="{% url 'Register' %}" style="text-decoration: none;">Sign up</a></small></div>
+            <div style="padding-top: 5px; text-align: center;"><small>Don't have an account? <a href="{% url 'Register' %}" style="text-decoration: none;">Sign up</a></small></div>
+            <div style=" text-align: center;"><small> or </small></div>
+
+            <a href="{% provider_login_url 'google' %}">
+                <div class='g-sign-in-button'>
+                    <div class=content-wrapper>
+                        <div class='logo-wrapper'>
+                            <img src="{% static 'VirMarket\images\g-logo.png' %}">
+                        </div>
+                        <span class='text-container'>
+                      <span>Sign in with Google</span>
+                    </span>
+                    </div>
+                </div>
+            </a>
+                
+
+
         </div>
 </div>
     

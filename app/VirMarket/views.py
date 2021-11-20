@@ -94,7 +94,6 @@ def Register(request):
             password = form.cleaned_data.get('password1')
 
             login(request, authenticate(username = username, password = password))
-            User_Finances.objects.create(User=request.user, Current_Balance = 100000.00)
             return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, 'register.html', {'UserForm': form})
