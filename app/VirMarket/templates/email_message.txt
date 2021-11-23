@@ -1,0 +1,1 @@
+New user {{username|safe}} has signed up!

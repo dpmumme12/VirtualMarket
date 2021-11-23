@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 
@@ -185,4 +187,26 @@ INTERNAL_IPS = [
 
 # CELERY SETTINGS
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = get_env_var('CELERY_BROKER')
+CELERY_RESULT_BACKEND = 'django-db'
+
+# Celery beat
+
+# CELERY_BEAT_SCHEDULE = {
+#     "scheduled_task":{
+#         # "task": "VirMarket.tasks.add",
+#         # "schedule": 5.0,
+#         # "args": (10,10),
+#     }
+# }
+
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = get_env_var('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_env_var('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = get_env_var('EMAIL_HOST_USER')
+DEFAULT_TO_EMAIL = get_env_var('DEFAULT_TO_EMAIL')

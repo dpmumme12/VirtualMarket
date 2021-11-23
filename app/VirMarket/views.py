@@ -78,6 +78,8 @@ def CompanyPage(request, Symbol):
         'CompanyData': CompanyData
     })
 
+
+@login_required()
 def UserProfile(request):
     return render(request, 'Profile.html')
 

@@ -10,6 +10,8 @@ services:
       - 8000
     env_file:
       - ./.env
+    depends_on:
+      - redis
 
   channels:
     build: ./app
@@ -21,6 +23,35 @@ services:
     env_file:
       - ./.env
 
+### Redis image ##
+  redis:
+    image: "redis:alpine"
+
+  
+### Celery workers ###
+  celery_worker:
+    build: ./app
+    command: celery -A VirtualMarket worker -l info
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+
+
+  celery_beat_worker:
+    build: ./app
+    command: celery -A VirtualMarket beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      
+
+  ### NGINX reverse proxy server
   nginx:
     build: ./nginx
     volumes:

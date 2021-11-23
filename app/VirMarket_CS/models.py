@@ -42,6 +42,20 @@ class User_Finances(models.Model):
 
     def __str__(self):
         return str(self.User)
+
+class User_Finance_History(models.Model):
+    CreatedOn = models.DateTimeField(auto_now_add=True)
+    Balance = models.DecimalField(max_digits=20, decimal_places=2)
+    User_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.User_id)
+
+
+
+
+
+
         
 
 
