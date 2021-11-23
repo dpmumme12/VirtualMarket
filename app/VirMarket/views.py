@@ -10,6 +10,7 @@ from urllib import parse
 from django.core.paginator import Paginator
 
 
+
 @login_required()
 def index(request):
 

@@ -179,6 +179,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-INTERNAL_IPS = [ 
+INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+# CELERY SETTINGS
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
