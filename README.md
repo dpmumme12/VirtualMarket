@@ -17,6 +17,7 @@ the interanl API's. It also use's websockets to provide realtime prices and data
       - `UserProfile.js` - Script for the 'Profile.html' template.
     - `template/auctions` - Contains all html files for the app.
       - `CompanyPage.html` - The company page for a stock showing all of the data for the company and where a user can buy/sell the stock.
+      - `email_message.txt` - The text to included in the email.
       - `index.html` - Homepage that shows the users balance as well as their current investments and transaction history.
       - `layout.html` - The base template that all other templates extend.
       - `Login.html` - The login page where a user can sign into their account.
@@ -24,8 +25,11 @@ the interanl API's. It also use's websockets to provide realtime prices and data
       - `register.html` - The page where a user can sign up for an account.
     - `apps.py` - The file to intialize and configure this app.
     - `consumers.py` - Implements the logic for the websocket conumsers.
+    - `email.py` - Holds the logic to send emails out.
     - `forms.py` - Holds the forms that are used in the app.
     - `routing.py` - Handles the routing of the websocket urls to the appropriate consumer in 'consumers.py'.
+    - `signals.py` - Holds the logic for signals initiated in this app.
+    - `tasks.py` - Has all of the tasks that are to be run.
     - `urls.py` - Contains the routing for all views in the 'views.py' file.
     - `views.py` - Contains all the views for the app.
   - `VirMarket_CS` - The internal API that is used to handle all business logic in the app.
@@ -38,6 +42,7 @@ the interanl API's. It also use's websockets to provide realtime prices and data
     - `views.py` - Contains all the API endpoints for the app.
   - `VirtualMarket` - Main Project directory for configurations.
     - `asgi.py` - Sets up the asgi server to be used in the project.
+    - `celery.py` - Sets up the celery app to run that runs the tasks.
     - `settings.py` - Holds all of the configurations for the Django application.
     - `urls.py` -  The main routing file that maps the incoming urls to the appropriate app.
     - `wsgi.py` - Sets up the wsgi server to be used in the project.
