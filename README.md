@@ -5,6 +5,10 @@ This is a Web app that allows you to buy and sell stocks and and practice your i
 and are allowed to invest it in whatever they want to see if they can increase their overall account balance over time. The app is built using Django and Django's Rest Framework for
 the interanl API's. It also use's websockets to provide realtime prices and data by the second. Check out the link at the bottom to try it out!
 
+### ==Component Diagram showing the infrastructure of the application==
+
+![Virtual Market Component diagram](/assets/VirtualMarket_Component_Diagram.jpg)
+
 ### ==Files and directories==
 - `app` - The main Django app that runs the project
   - `VirMarket` - The "front end app" that serves users the pages and handles all logic associated with the enduser of the web app.
