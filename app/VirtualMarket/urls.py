@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from allauth.socialaccount.providers.oauth2.urls import default_urlpatterns
 from allauth.socialaccount.providers.google.provider import GoogleProvider
+from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
     path('', include('VirMarket.urls')),

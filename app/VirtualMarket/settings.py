@@ -68,7 +68,20 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'django_celery_beat',
     'django_celery_results',
+    'drf_yasg',
+
 ]
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'token'
+      }
+    },
+    'DEFAULT_INFO': 'VirMarket_CS.urls.api_info',
+}
+
 
 
 MIDDLEWARE = [

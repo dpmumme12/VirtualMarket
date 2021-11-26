@@ -1,5 +1,5 @@
 from .models import Stocks, Transactions, User_Finances
-from .serializers import StocksSerializer, TransactionsSerializer, User_FinancesSerializer, User_ProfileSerializer
+from .serializers import StocksSerializer, TransactionsSerializer, User_FinancesSerializer, User_ProfileSerializer,PostResponse
 from rest_framework.response import Response
 from rest_framework import  status
 from rest_framework.views import APIView
@@ -7,10 +7,13 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from rest_framework import generics
+from drf_yasg.utils import swagger_auto_schema
 
 ##############################
 ### Internal API endpoints ###
 ##############################
+
 
 class StockTransactionAPIView(APIView):
     """API endpoint to handle all transactions the user makes such as Buying or Selling stocks"""
@@ -18,10 +21,8 @@ class StockTransactionAPIView(APIView):
     ### Setting the authentication for the endpoint ###
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    
-    ### declaring the serializer class associated to this endpoint ###
-    serializer_class = TransactionsSerializer
 
+    @swagger_auto_schema(responses={200:  TransactionsSerializer() })
     def get(self, request):
         """Gets all transactions the user has made"""
 
@@ -29,6 +30,7 @@ class StockTransactionAPIView(APIView):
         serializer = TransactionsSerializer(get_transactions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(responses={200:  PostResponse, 400: PostResponse }, request_body= TransactionsSerializer)
     def post(self, request):
         """Handles the Buying and Selling of stocks"""
 
@@ -37,23 +39,22 @@ class StockTransactionAPIView(APIView):
         if serializer.is_valid():
             try:
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(PostResponse().successful(), status=status.HTTP_201_CREATED)
             except Exception as error:
-                return Response({'error_message': str(error)}, status=status.HTTP_402_PAYMENT_REQUIRED)
+                return Response(PostResponse().error(errors=serializer.errors, msg=str(error)), status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(PostResponse().error(serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
 
-class StocksAPIView(APIView):
+class StocksAPIView(generics.GenericAPIView):
     """API endpoint to get all of the stocks the user is currently invested in"""
-
+  
     ### Setting the authentication for the endpoint ###
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    ### declaring the serializer class associated to this endpoint ###
-    serializer_class = StocksSerializer
-
+    
+    @swagger_auto_schema(responses={200:  StocksSerializer })
     def get(self, request):
         get_stocks = Stocks.objects.filter(User_id = request.user.id)
         serializer = StocksSerializer(get_stocks, many=True)
@@ -67,9 +68,7 @@ class User_FinancesAPIView(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    ### declaring the serializer class associated to this endpoint ###
-    serializer_class = User_Finances
-
+    @swagger_auto_schema(responses={200:  User_FinancesSerializer })
     def get(self, request):
         user = User.objects.get(id=request.user.id)
         get_user = User_Finances.objects.get(User=user)
@@ -78,26 +77,28 @@ class User_FinancesAPIView(APIView):
 
 
 class User_InfoAPIView(APIView):
-    """API endpoint to get user's progile info as well as update it"""
+    """API endpoint to get user's profile info as well as update it"""
 
     ### Setting the authentication for the endpoint ###
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-
+    @swagger_auto_schema(responses={200:  User_ProfileSerializer })
     def get(self, request):
         user_info = User.objects.get(id = request.user.id)
         serializer = User_ProfileSerializer(user_info)
         return Response(serializer.data, status = status.HTTP_200_OK)
 
+    @swagger_auto_schema(responses={200: PostResponse, 400: PostResponse }, request_body=User_ProfileSerializer)
     def put(self, request):
         user = get_object_or_404(User, pk=request.user.id)
         serializer = User_ProfileSerializer(user,data=request.data)
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status = status.HTTP_200_OK)
+            return Response(PostResponse().successful(), status = status.HTTP_200_OK)
 
-        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        return Response(PostResponse().error(serializer.errors), status.HTTP_400_BAD_REQUEST)
+
 
 

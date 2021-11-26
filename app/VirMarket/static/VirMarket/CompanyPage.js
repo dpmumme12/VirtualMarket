@@ -73,7 +73,7 @@ function RemoveShare(){
 
 //logic to run when the user hits the Buy/Sell button to make the transaction
 function Transaction(){
-    var SumbitButton = document.getElementById("SumbitButton");
+    //var SumbitButton = document.getElementById("SumbitButton");
     //SumbitButton.disabled = true;
 
     var shares = document.getElementById('SharesInput').value;
@@ -120,9 +120,9 @@ function Transaction(){
                 document.getElementById('alert-wrapper').style.display = 'block';
             }
         }
-        else if (response_status === 402) {
+        else if (response_status === 400) {
             document.getElementById('alert-wrapper').className = 'alert alert-danger alert-dismissible';
-            document.getElementById('alert-text').innerHTML = `<i class="bi bi-exclamation-triangle-fill" style="padding-right: 10px;"></i> ${resp.data.error_message}`;
+            document.getElementById('alert-text').innerHTML = `<i class="bi bi-exclamation-triangle-fill" style="padding-right: 10px;"></i> ${resp.data.msg}`;
             document.getElementById('alert-wrapper').style.display = 'block';
         }
         else {

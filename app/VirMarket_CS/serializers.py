@@ -8,6 +8,26 @@ from django.contrib.auth.models import User
 ########################################
 
 
+
+
+class PostResponse(serializers.Serializer):
+    success = serializers.BooleanField()
+    msg = serializers.CharField(max_length=100)
+    errors = serializers.DictField(child= serializers.ListField())
+
+    def successful(self):
+        response = self.data
+        response['success'] = True
+        return response
+
+    def error(self, errors, msg=''):
+        response = self.data
+        response['success'] = False
+        response['msg'] = msg
+        response['errors'] = errors
+        return response
+
+
 class StocksSerializer(serializers.ModelSerializer):
     """Serializer for the StocksAPIView"""
 
