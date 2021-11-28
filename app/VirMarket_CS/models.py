@@ -37,7 +37,7 @@ class Transactions(models.Model):
 class User_Finances(models.Model):
     """ This model is to keep track of the users finances. """
 
-    User = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    User = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, unique=True)
     Current_Balance = models.DecimalField(max_digits=20, decimal_places=2)
 
     def __str__(self):

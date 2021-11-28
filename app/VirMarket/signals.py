@@ -10,5 +10,5 @@ def create_user(sender, instance, created, **kwargs):
 
     if created:
         User_Finances.objects.create(User=instance, Current_Balance = 100000.00)
-        send_signup_email_task.delay(instance.username)
+        #send_signup_email_task.delay(instance.username)
 
