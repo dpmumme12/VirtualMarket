@@ -8,10 +8,12 @@ from VirMarket_CS.models import User_Finances, Stocks, Transactions
 import requests
 from urllib import parse
 from django.core.paginator import Paginator
+from .decorators import unathenticated_user, allowed_users
 
 
 
 @login_required()
+@allowed_users(allowed_roles=['admin', 'customer'])
 def index(request):
 
     objects = Transactions.objects.filter(User_id = request.user.id).order_by('-TransactionDateTime')
@@ -88,6 +90,7 @@ def UserProfile(request):
 ### Authentication Views ###
 ############################
 
+@unathenticated_user
 def Register(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -104,6 +107,7 @@ def Register(request):
     UserForm = SignUpForm()
     return render(request, 'register.html', {'UserForm': UserForm})
 
+@unathenticated_user
 def Login(request):
     if request.method == 'POST':
         username = request.POST['username']
