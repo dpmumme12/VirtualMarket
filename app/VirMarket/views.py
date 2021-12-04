@@ -1,19 +1,19 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.urls import reverse
 from .forms import SignUpForm, LoginForm
 from VirMarket_CS.models import User_Finances, Stocks, Transactions
 import requests
 from urllib import parse
 from django.core.paginator import Paginator
-from .decorators import unathenticated_user, allowed_users
+from .decorators import unathenticated_user, allowed_groups, allowed_permissions
 
 
 
 @login_required()
-@allowed_users(allowed_roles=['admin', 'customer'])
+@allowed_permissions(allowed_permissions= {'VirMarket_CS.User_Admin', 'VirMarket_CS.Basic_Customer_User'})
 def index(request):
 
     objects = Transactions.objects.filter(User_id = request.user.id).order_by('-TransactionDateTime')

@@ -52,6 +52,16 @@ class User_Finance_History(models.Model):
         return str(self.User_id)
 
 
+### Custom permisions models ###
+
+class user_roles(models.Model):
+    class Meta:
+        managed = False
+        permissions = [('User_Admin', 'Has access to the entire application'),
+                        ('Basic_Customer_User', 'Has basic access to the application'),
+                        ]
+
+
 
 
 

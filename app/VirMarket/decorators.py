@@ -10,14 +10,30 @@ def unathenticated_user(view_func):
 
     return wrapper_func
 
-def allowed_users(allowed_roles=[]):
+
+def allowed_groups(allowed_roles=[]):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs): 
+            
             IsAllowed = request.user.groups.filter(name__in=allowed_roles).exists()
            
             if IsAllowed:
                 return view_func(request, *args, **kwargs)
             else:
                 return HttpResponse('You are not authorized to view this page')
+        return wrapper_func
+    return decorator
+
+
+def allowed_permissions(allowed_permissions=set()):
+    def decorator(view_func):
+        def wrapper_func(request, *args, **kwargs):
+            IsAllowed = any(perm in request.user.get_group_permissions(obj=None) for perm in allowed_permissions)
+
+            if IsAllowed:
+                return view_func(request, *args, **kwargs)
+            else:
+                return HttpResponse('You are not authorized to view this page')
+        
         return wrapper_func
     return decorator
