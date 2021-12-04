@@ -1,15 +1,18 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required, permission_required
-from django.urls import reverse
-from .forms import SignUpForm, LoginForm
-from VirMarket_CS.models import User_Finances, Stocks, Transactions
-import requests
 from urllib import parse
-from django.core.paginator import Paginator
-from .decorators import unathenticated_user, allowed_groups, allowed_permissions
 
+import requests
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, permission_required
+from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.contrib.auth.models import Group
+from VirMarket_CS.models import Stocks, Transactions, User_Finances
+
+from .decorators import (allowed_groups, allowed_permissions,
+                         unathenticated_user)
+from .forms import LoginForm, SignUpForm
 
 
 @login_required()
@@ -62,6 +65,7 @@ def index(request):
 
 
 @login_required()
+@allowed_permissions(allowed_permissions= {'VirMarket_CS.User_Admin', 'VirMarket_CS.Basic_Customer_User'})
 def CompanyPage(request, Symbol):
  
     url = f'https://sandbox.iexapis.com/stable/stock/{Symbol}/chart/3m?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
@@ -82,6 +86,7 @@ def CompanyPage(request, Symbol):
 
 
 @login_required()
+@allowed_permissions(allowed_permissions= {'VirMarket_CS.User_Admin', 'VirMarket_CS.Basic_Customer_User'})
 def UserProfile(request):
     return render(request, 'Profile.html')
 
@@ -95,9 +100,12 @@ def Register(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+
+            user_group = Group.objects.get(name='customer') 
+            user.groups.add(user_group)
 
             login(request, authenticate(username = username, password = password))
             return HttpResponseRedirect(reverse('index'))
