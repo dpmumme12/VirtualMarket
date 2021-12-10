@@ -15,9 +15,13 @@ from .decorators import (allowed_groups, allowed_permissions,
 from .forms import LoginForm, SignUpForm
 
 
+
 @login_required()
 @allowed_permissions(allowed_permissions= {'VirMarket_CS.User_Admin', 'VirMarket_CS.Basic_Customer_User'})
 def index(request):
+
+    if request.session.get('RecentlyViewed_Stocks', []):
+        print(request.session['RecentlyViewed_Stocks'])
 
     objects = Transactions.objects.filter(User_id = request.user.id).order_by('-TransactionDateTime')
     Users_Transactions = Paginator(objects, 20)
@@ -67,6 +71,15 @@ def index(request):
 @login_required()
 @allowed_permissions(allowed_permissions= {'VirMarket_CS.User_Admin', 'VirMarket_CS.Basic_Customer_User'})
 def CompanyPage(request, Symbol):
+
+    if request.session.get('RecentlyViewed_Stocks', []):
+        request.session['RecentlyViewed_Stocks'].append(Symbol)
+        request.session.modified = True
+    
+    else:
+        request.session['RecentlyViewed_Stocks'] = [Symbol]
+
+    
  
     url = f'https://sandbox.iexapis.com/stable/stock/{Symbol}/chart/3m?token=Tsk_67f6bc30222b44d1b13725f19d0619db'
     ChartData = requests.get(url).json()
