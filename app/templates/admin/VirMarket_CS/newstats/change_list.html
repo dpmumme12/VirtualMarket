@@ -1,0 +1,67 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js" integrity="sha512-60KwWtZOhzgr840mc57MV8JqDZHAws3w61mhK45KsYHmhyNFJKmfg4M7/s2Jsn4PgtQ4Uhr9xItS+HCbGTIRYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        const chartData = {{ stats_data | safe }};
+
+        let arr = []
+
+        for (let value of Object.values(chartData[0])) {
+            arr.push(value);
+        }
+
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Windows', 'Mac', 'Iphone', 'Android', 'Other'],
+                datasets: [{
+                    label: '# of Visits',
+                    data: arr,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(144,238,144, 0.2)',
+                        'rgba(138,43,226, 0.2)',
+                        'rgba(255,127,80, 0.2)',
+                        
+                        
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(144,238,144, 1)',
+                        'rgba(138,43,226, 1)',
+                        'rgba(255,127,80, 1)',
+                    ],
+                    borderWidth: 2
+                }] 
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div style="width: 80%">
+    <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="myChart"></canvas>
+</div>
+
+{{ block.super }}
+{% endblock %}

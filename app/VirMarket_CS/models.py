@@ -61,6 +61,15 @@ class user_roles(models.Model):
                         ('Basic_Customer_User', 'Has basic access to the application'),
                         ]
 
+### middleware table ###
+
+class newstats(models.Model):
+    win = models.IntegerField()
+    mac = models.IntegerField()
+    iphone = models.IntegerField()
+    android = models.IntegerField()
+    other = models.IntegerField()
+
 
 
 
